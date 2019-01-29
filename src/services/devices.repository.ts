@@ -1,0 +1,184 @@
+import { cloneDeep, isEqual, Omit } from 'lodash';
+import { Observable, Subject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+
+import { Inject } from '../ioc';
+import { AllStates, Devices, StateChanges } from '../models';
+import { NotifyGoogleService } from './notifygoogle.service';
+
+export class DevicesRepository {
+    private static commands = new Subject<Command>();
+    private static statechanges = new Subject<{ uid: string, stateChanges: StateChanges }>();
+    private static onlineUsers: {
+        [uid: string]: {
+            [group: string]: string;
+        };
+    } = {};
+    private static devicesPerUser: {
+        [uid: string]: {
+            [group: string]: Devices;
+        };
+    } = {};
+
+    get isUserOnline() {
+        return !!DevicesRepository.onlineUsers[this.uid];
+    }
+
+    get onlineUsers() {
+        return DevicesRepository.onlineUsers;
+    }
+
+    get allDevices() {
+        return DevicesRepository.devicesPerUser;
+    }
+
+    readonly stateChanges$ = DevicesRepository.statechanges.pipe(filter(c => c.uid === this.uid), map(c => c.stateChanges));
+    readonly commands$ = DevicesRepository.commands.pipe(filter(c => c.uid === this.uid), map(c => c as Omit<Command, 'uid'>));
+
+    constructor(
+        @Inject('uid')
+        private uid: string,
+        private notifyGoogle: NotifyGoogleService,
+    ) {
+    }
+
+    async sync(devices: Devices, group: string) {
+        const oldDevices = this.getDevicesInternal(group);
+
+        const existingDevices = this.getSyncCompareDevices(oldDevices);
+        const newDevices = this.getSyncCompareDevices(devices);
+
+        let userGroups = DevicesRepository.devicesPerUser[this.uid];
+        if (!userGroups) {
+            DevicesRepository.devicesPerUser[this.uid] = userGroups = {};
+        }
+
+        userGroups[group] = cloneDeep(devices);
+        if (!isEqual(existingDevices, newDevices)) {
+            try {
+                await this.notifyGoogle.requestSync();
+            } catch (err) {
+                console.warn(`requestSync failed, trying again in 10 sec`, err);
+                await new Promise(r => setTimeout(r, 10000));
+                this.notifyGoogle.requestSync().catch(err => {
+                    console.warn(`requestSync try 2 failed`, err);
+                });
+            }
+        }
+    }
+
+    getAllDevices() {
+        return this.getDevicesInternal();
+    }
+
+    getDevicesById(ids: string[]) {
+        const userDevices = this.getAllDevices();
+        return ids.map(id => userDevices[id]);
+    }
+
+    getDevice(id: string) {
+        return this.getAllDevices()[id];
+    }
+
+    userOnline(group: string, version: string = 'unknown') {
+        return new Observable<void>(() => {
+            let onlineGroups = DevicesRepository.onlineUsers[this.uid];
+            if (!onlineGroups) {
+                DevicesRepository.onlineUsers[this.uid] = onlineGroups = {};
+            }
+            onlineGroups[group] = version;
+
+            return () => {
+                delete onlineGroups[group];
+                if (Object.keys(onlineGroups).length === 0) {
+                    delete DevicesRepository.onlineUsers[this.uid];
+                }
+                const deviceIds = Object.keys(this.getDevicesInternal(group));
+                this.updateDevicesState(deviceIds, { online: false }, { group });
+            };
+        });
+    }
+
+    activateScenes(deviceIds: string[], deactivate: boolean) {
+        DevicesRepository.commands.next({ type: 'activate-scene', uid: this.uid, deviceIds, deactivate });
+    }
+
+    updateDevicesState(
+        ids: string[],
+        changes: Partial<AllStates>,
+        { notifyClient = false, requestId, group }: { notifyClient?: boolean, requestId?: string, group?: string } = {}
+    ) {
+        const groupDevices = this.getDevicesInternal(group);
+        const stateChanges: StateChanges = {};
+        let anyChange = false;
+        for (const id of ids) {
+            const device = groupDevices[id];
+            if (!device) { continue; }
+
+            let hasChanged = false;
+            for (const key of Object.keys(changes)) {
+                if (!(key in device.state)) { continue; }
+                const oldValue = device.state[key];
+                const newValue = changes[key];
+                if (typeof oldValue === typeof newValue && !isEqual(oldValue, newValue)) {
+                    device.state[key] = cloneDeep(newValue);
+                    hasChanged = true;
+                }
+            }
+
+            if (hasChanged) {
+                stateChanges[id] = cloneDeep(device.state);
+                anyChange = true;
+            }
+        }
+
+        if (anyChange) {
+            this.notifyGoogle.reportState(stateChanges, requestId).catch(err => {
+                console.warn('err while reporting state', err);
+            });
+
+            if (notifyClient) {
+                DevicesRepository.statechanges.next({ uid: this.uid, stateChanges });
+            }
+        }
+    }
+
+    getDeviceIdsInGroup(group: string) {
+        const userDevices = DevicesRepository.devicesPerUser[this.uid] || {};
+        const groupDevices = userDevices[group] || [];
+        return Object.keys(groupDevices);
+    }
+
+    private getDevicesInternal(group?: string) {
+        const userDevices = DevicesRepository.devicesPerUser[this.uid] || {};
+        if (group) {
+            return userDevices[group] || {};
+        } else {
+            const allDevices: Devices = {};
+            for (const groupName of Object.keys(userDevices)) {
+                const groupDevices = userDevices[groupName];
+                for (const deviceId of Object.keys(groupDevices)) {
+                    allDevices[deviceId] = groupDevices[deviceId];
+                }
+            }
+            return allDevices;
+        }
+    }
+
+    private getSyncCompareDevices(devices: Devices) {
+        const forCompare: Devices = {};
+        for (const id of Object.keys(devices)) {
+            forCompare[id] = { ...devices[id], state: null };
+        }
+        return forCompare;
+    }
+}
+
+export type Command = ActivateSceneCommand;
+
+export interface ActivateSceneCommand {
+    type: 'activate-scene';
+    uid: string;
+    deviceIds: string[];
+    deactivate: boolean;
+}

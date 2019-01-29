@@ -1,0 +1,150 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": {
+        "anyOf": [
+            {
+                "$ref": "#/definitions/Partial<State>"
+            },
+            {
+                "$ref": "#/definitions/Partial<SwitchState>"
+            },
+            {
+                "$ref": "#/definitions/Partial<LightState>"
+            },
+            {
+                "$ref": "#/definitions/Partial<LightColorState>"
+            },
+            {
+                "$ref": "#/definitions/Partial<ThermostatSingleState>"
+            }
+        ]
+    },
+    "definitions": {
+        "Partial<LightColorState>": {
+            "additionalProperties": false,
+            "properties": {
+                "brightness": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "color": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "spectrumHsv": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hue": {
+                                    "maximum": 360,
+                                    "minimum": 0,
+                                    "type": "number"
+                                },
+                                "saturation": {
+                                    "maximum": 1,
+                                    "minimum": 0,
+                                    "type": "number"
+                                },
+                                "value": {
+                                    "maximum": 1,
+                                    "minimum": 0,
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "hue",
+                                "saturation",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "spectrumHsv"
+                    ],
+                    "type": "object"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<LightState>": {
+            "additionalProperties": false,
+            "properties": {
+                "brightness": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<State>": {
+            "additionalProperties": false,
+            "properties": {
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<SwitchState>": {
+            "additionalProperties": false,
+            "properties": {
+                "on": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<ThermostatSingleState>": {
+            "additionalProperties": false,
+            "properties": {
+                "online": {
+                    "type": "boolean"
+                },
+                "thermostatHumidityAmbient": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "thermostatMode": {
+                    "enum": [
+                        "auto",
+                        "cool",
+                        "dry",
+                        "eco",
+                        "fan-only",
+                        "heat",
+                        "off",
+                        "on",
+                        "purifier"
+                    ],
+                    "type": "string"
+                },
+                "thermostatTemperatureAmbient": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpoint": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "type": "object"
+}
+
