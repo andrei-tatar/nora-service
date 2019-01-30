@@ -1,6 +1,7 @@
 import { userAdminUid } from '../../config';
 import { DevicesRepository } from '../../services/devices.repository';
 import { Http } from '../decorators/http';
+import { Param } from '../decorators/param';
 import { authFilter } from '../middlewares/auth';
 import { Controller } from './controller';
 
@@ -15,11 +16,18 @@ export class AdminController extends Controller {
     }
 
     @Http.get()
-    get() {
-        const userIds = Object.keys(this.devices.onlineUsers);
+    get(
+        @Param.fromQuery('uid') uid?: string,
+    ) {
         return {
-            onlineUsers: Object.keys(this.devices.onlineUsers).length,
-            connections: userIds.map(id => Object.keys(this.devices.onlineUsers[id]).length).reduce((sum, count) => sum + count, 0),
+
+            onlineUsers: uid
+                ? this.devices.onlineUsers[uid]
+                : this.devices.onlineUsers,
+
+            devices: uid
+                ? this.devices.allDevices[uid]
+                : this.devices.allDevices,
         };
     }
 }
