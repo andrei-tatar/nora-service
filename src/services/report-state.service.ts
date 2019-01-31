@@ -1,18 +1,18 @@
 import fetch from 'node-fetch';
 
-import { googleProjectApiKey, serviceAccountIssuer, serviceAccountPrivateKey } from '../config';
+import { serviceAccountIssuer, serviceAccountPrivateKey } from '../config';
 import { Inject } from '../ioc';
 import { StateChanges } from '../models';
 import { delay } from '../util';
 import { JwtService } from './jwt.service';
-import { User, UserRepository } from './user.repository';
+import { UserRepository } from './user.repository';
 
 interface GoogleToken {
     token: string;
     expires: number;
 }
 
-export class NotifyGoogleService {
+export class ReportStateService {
     private static token: Promise<GoogleToken>;
 
     constructor(
@@ -23,32 +23,12 @@ export class NotifyGoogleService {
     ) {
     }
 
-    async requestSync() {
-        if (!await this.userRepo.isUserLinked(this.uid)) { return; }
-
-        while (true) {
-            const response = await fetch(`https://homegraph.googleapis.com/v1/devices:requestSync?key=${googleProjectApiKey}`, {
-                method: 'post',
-                body: JSON.stringify({ agentUserId: this.uid }),
-                headers: { 'content-type': 'application/json' },
-            });
-            if (response.ok) { return; }
-            if (response.status === 429) {
-                await delay((Math.floor(Math.random() * 20) + 5) * 1000);
-                continue;
-            }
-
-            throw new Error(`while requestSync (${this.uid}). status: ${response.status} - ${await response.text()}`);
-        }
-    }
-
-    async reportState(stateChanges: StateChanges, requestId?: string) {
+    async reportState(stateChanges: StateChanges, requestId?: string, tries = 3) {
         if (!await this.userRepo.isUserLinked(this.uid)) { return null; }
-        const start = new Date().getTime();
-        while (true) {
+        while (tries-- > 0) {
             const response = await this.reportStateInternal(stateChanges, requestId);
             if (response.ok) { return; }
-            if (response.status !== 404 || new Date().getTime() - start > 60000) {
+            if (response.status !== 404) {
                 throw new Error(`while reportState (${this.uid}). status: ${response.status} - ${await response.text()}`);
             }
             await delay(20000);
@@ -56,15 +36,15 @@ export class NotifyGoogleService {
     }
 
     private async reportStateInternal(stateChanges: StateChanges, requestId?: string) {
-        if (!NotifyGoogleService.token ||
-            (await NotifyGoogleService.token).expires < new Date().getTime()) {
-            NotifyGoogleService.token = this.getToken().catch(err => {
-                delete NotifyGoogleService.token;
+        if (!ReportStateService.token ||
+            (await ReportStateService.token).expires < new Date().getTime()) {
+            ReportStateService.token = this.getToken().catch(err => {
+                delete ReportStateService.token;
                 throw err;
             });
         }
 
-        const token = await NotifyGoogleService.token;
+        const token = await ReportStateService.token;
         const body = {
             requestId,
             agentUserId: this.uid,

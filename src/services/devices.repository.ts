@@ -4,7 +4,8 @@ import { filter, map } from 'rxjs/operators';
 
 import { Inject } from '../ioc';
 import { AllStates, Devices, StateChanges } from '../models';
-import { NotifyGoogleService } from './notifygoogle.service';
+import { ReportStateService } from './report-state.service';
+import { RequestSyncService } from './request-sync.service';
 
 export class DevicesRepository {
     private static commands = new Subject<Command>();
@@ -38,7 +39,8 @@ export class DevicesRepository {
     constructor(
         @Inject('uid')
         private uid: string,
-        private notifyGoogle: NotifyGoogleService,
+        private reportStateService: ReportStateService,
+        private requestSyncService: RequestSyncService,
     ) {
     }
 
@@ -56,11 +58,11 @@ export class DevicesRepository {
         userGroups[group] = cloneDeep(devices);
         if (!isEqual(existingDevices, newDevices)) {
             try {
-                await this.notifyGoogle.requestSync();
+                await this.requestSyncService.requestSync();
             } catch (err) {
                 console.warn(`requestSync failed, trying again in 10 sec`, err);
                 await new Promise(r => setTimeout(r, 10000));
-                this.notifyGoogle.requestSync().catch(err => {
+                this.requestSyncService.requestSync().catch(err => {
                     console.warn(`requestSync try 2 failed`, err);
                 });
             }
@@ -133,7 +135,7 @@ export class DevicesRepository {
         }
 
         if (anyChange) {
-            this.notifyGoogle.reportState(stateChanges, requestId).catch(err => {
+            this.reportStateService.reportState(stateChanges, requestId).catch(err => {
                 console.warn('err while reporting state', err);
             });
 

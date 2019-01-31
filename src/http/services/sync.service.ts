@@ -4,7 +4,7 @@ import { DeviceTypes, SyncDevice, SyncPayload, Trait } from '../../google';
 import { Inject } from '../../ioc';
 import { Devices, StateChanges } from '../../models';
 import { DevicesRepository } from '../../services/devices.repository';
-import { NotifyGoogleService } from '../../services/notifygoogle.service';
+import { ReportStateService } from '../../services/report-state.service';
 import { delay } from '../../util';
 
 export class SyncService {
@@ -13,7 +13,7 @@ export class SyncService {
         @Inject('uid')
         private uid: string,
         private devices: DevicesRepository,
-        private notifyGoogle: NotifyGoogleService,
+        private reportStateService: ReportStateService,
     ) {
     }
 
@@ -93,7 +93,7 @@ export class SyncService {
         if (ids.length) {
             try {
                 await delay(3000);
-                await this.notifyGoogle.reportState(stateChanges, requestId);
+                await this.reportStateService.reportState(stateChanges, requestId);
             } catch (err) {
                 console.warn(`reportState failed (uid: ${this.uid})`, err);
             }

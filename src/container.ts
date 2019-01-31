@@ -8,8 +8,9 @@ import { DevicesRepository } from './services/devices.repository';
 import { FirebaseService } from './services/firebase.service';
 import { JwtService } from './services/jwt.service';
 import { NoderedTokenService } from './services/nodered-token.service';
-import { NotifyGoogleService } from './services/notifygoogle.service';
 import { PostgressService } from './services/postgress.service';
+import { ReportStateService } from './services/report-state.service';
+import { RequestSyncService } from './services/request-sync.service';
 import { UserRepository } from './services/user.repository';
 import { ValidationService } from './services/validation.service';
 import { ConnectionHandler } from './socket/connectionhandler';
@@ -28,7 +29,8 @@ container.register({ token: ExecuteService, useClass: ExecuteService, lifetime: 
 container.register({ token: DisconnectService, useClass: DisconnectService, lifetime: Lifetime.Request });
 container.register({ token: ConnectionHandler, useClass: ConnectionHandler, lifetime: Lifetime.Request });
 container.register({ token: DevicesRepository, useClass: DevicesRepository, lifetime: Lifetime.Request });
-container.register({ token: NotifyGoogleService, useClass: NotifyGoogleService, lifetime: Lifetime.Request });
+container.register({ token: ReportStateService, useClass: ReportStateService, lifetime: Lifetime.Request });
+container.register({ token: RequestSyncService, useClass: RequestSyncService, lifetime: Lifetime.Request });
 
 container.register({ token: UserRepository, useClass: UserRepository });
 container.register({ token: NoderedTokenService, useClass: NoderedTokenService });
