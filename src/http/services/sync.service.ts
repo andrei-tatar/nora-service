@@ -78,6 +78,10 @@ export class SyncService {
                         thermostatTemperatureUnit: device.temperatureUnit,
                     };
                     break;
+                case 'speaker':
+                    sync.type = DeviceTypes.Speaker;
+                    sync.traits.push(Trait.OnOff, Trait.Volume);
+                    break;
             }
             syncDevices.push(sync);
         }

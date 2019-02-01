@@ -821,6 +821,120 @@
             {
                 "additionalProperties": false,
                 "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/SpeakerState"
+                    },
+                    "type": {
+                        "enum": [
+                            "speaker"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/SpeakerState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "speaker"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/SpeakerState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "speaker"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
                     "availableModes": {
                         "items": {
                             "enum": [
@@ -1091,6 +1205,32 @@
             },
             "required": [
                 "brightness",
+                "on",
+                "online"
+            ],
+            "type": "object"
+        },
+        "SpeakerState": {
+            "additionalProperties": false,
+            "properties": {
+                "currentVolume": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "isMuted": {
+                    "type": "boolean"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "currentVolume",
+                "isMuted",
                 "on",
                 "online"
             ],

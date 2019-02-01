@@ -1,6 +1,7 @@
 import { LightDevice, LightDeviceWithBrightness, LightDeviceWithColor } from './light';
 import { OutletDevice } from './outlet';
 import { SceneDevice } from './scene';
+import { SpeakerDevice } from './speaker';
 import { SwitchDevice } from './switch';
 import { ThermostatDevice } from './thermostat';
 
@@ -9,7 +10,7 @@ export interface Devices {
 }
 
 export type Device = SwitchDevice | LightDevice | LightDeviceWithBrightness |
-    LightDeviceWithColor | SceneDevice | OutletDevice | ThermostatDevice;
+    LightDeviceWithColor | SceneDevice | OutletDevice | ThermostatDevice | SpeakerDevice;
 
 export type AllStates = Device['state'];
 

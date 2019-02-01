@@ -38,6 +38,7 @@ export enum Trait {
     OnOff = 'action.devices.traits.OnOff',
     Scene = 'action.devices.traits.Scene',
     TemperatureSetting = 'action.devices.traits.TemperatureSetting',
+    Volume = 'action.devices.traits.Volume',
 }
 
 export enum DeviceTypes {
@@ -46,4 +47,5 @@ export enum DeviceTypes {
     Scene = 'action.devices.types.SCENE',
     Outlet = 'action.devices.types.OUTLET',
     Thermostat = 'action.devices.types.THERMOSTAT',
+    Speaker = 'action.devices.types.SPEAKER',
 }

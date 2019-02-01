@@ -60,6 +60,28 @@ export class ExecuteService {
             const deactivate: boolean = typeof execution.params.deactivate === 'boolean' ? execution.params.deactivate : false;
             this.devices.activateScenes(deviceIds, deactivate);
             break;
+          case ExecuteCommandTypes.SetVolume:
+            this.devices.updateDevicesState(deviceIds, { currentVolume: execution.params.volumeLevel }, {
+              requestId,
+              notifyClient: true,
+            });
+            break;
+          case ExecuteCommandTypes.VolumeRelative:
+            this.devices.updateDevicesState(deviceIds, deviceState => {
+              if ('currentVolume' in deviceState) {
+                const delta = execution.params.relativeSteps * execution.params.volumeRelativeLevel;
+                const newVolume = Math.min(100, Math.max(0, deviceState.currentVolume + delta));
+                return { currentVolume: newVolume };
+              }
+              return {};
+            }, {
+                requestId,
+                notifyClient: true,
+              });
+            break;
+          default:
+            console.warn(`unsupported execution command: ${execution.command}`);
+            break;
         }
 
         state.successDeviceIds.push(...deviceIds);

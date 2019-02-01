@@ -16,6 +16,8 @@ export enum ExecuteCommandTypes {
     ThermostatTemperatureSetpoint = 'action.devices.commands.ThermostatTemperatureSetpoint',
     ThermostatTemperatureSetRange = 'action.devices.commands.ThermostatTemperatureSetRange',
     ThermostatSetMode = 'action.devices.commands.ThermostatSetMode',
+    SetVolume = 'action.devices.commands.setVolume',
+    VolumeRelative = 'action.devices.commands.volumeRelative',
 }
 
 export interface ExecuteCommand {
@@ -29,7 +31,7 @@ export interface ExecuteCommand {
 export interface CommandExecution {
     command: ExecuteCommandTypes;
     params: {
-        [param: string]: number | boolean | string;
+        [param: string]: any;
     };
     challenge?: {
         ack?: boolean;

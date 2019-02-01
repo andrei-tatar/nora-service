@@ -15,6 +15,9 @@
                 "$ref": "#/definitions/Partial<LightColorState>"
             },
             {
+                "$ref": "#/definitions/Partial<SpeakerState>"
+            },
+            {
                 "$ref": "#/definitions/Partial<ThermostatSingleState>"
             }
         ]
@@ -79,6 +82,26 @@
                     "maximum": 100,
                     "minimum": 0,
                     "type": "number"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<SpeakerState>": {
+            "additionalProperties": false,
+            "properties": {
+                "currentVolume": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "isMuted": {
+                    "type": "boolean"
                 },
                 "on": {
                     "type": "boolean"

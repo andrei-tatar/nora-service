@@ -107,7 +107,7 @@ export class DevicesRepository {
 
     updateDevicesState(
         ids: string[],
-        changes: Partial<AllStates>,
+        changes: Partial<AllStates> | ((state: AllStates) => Partial<AllStates>),
         { notifyClient = false, requestId, group }: { notifyClient?: boolean, requestId?: string, group?: string } = {}
     ) {
         const groupDevices = this.getDevicesInternal(group);
@@ -118,10 +118,11 @@ export class DevicesRepository {
             if (!device) { continue; }
 
             let hasChanged = false;
-            for (const key of Object.keys(changes)) {
+            const deviceChanges = typeof changes === 'function' ? changes(device.state) : changes;
+            for (const key of Object.keys(deviceChanges)) {
                 if (!(key in device.state)) { continue; }
                 const oldValue = device.state[key];
-                const newValue = changes[key];
+                const newValue = deviceChanges[key];
                 if (typeof oldValue === typeof newValue && !isEqual(oldValue, newValue)) {
                     device.state[key] = cloneDeep(newValue);
                     hasChanged = true;

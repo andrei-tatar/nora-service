@@ -52,6 +52,11 @@ export class QueryService {
                 state.thermostatTemperatureSetpoint = device.state.thermostatTemperatureSetpoint;
                 // }
                 break;
+            case 'speaker':
+                state.on = device.state.on;
+                state.currentVolume = device.state.currentVolume;
+                state.isMuted = device.state.isMuted;
+                break;
         }
     }
 }
