@@ -13,4 +13,5 @@ export interface SpeakerState extends State {
 export type SpeakerDevice = BaseDevice & {
     type: 'speaker';
     state: SpeakerState;
+    relativeVolumeStep?: number;
 };

@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { Inject } from '../ioc';
-import { AllStates, Devices, StateChanges } from '../models';
+import { AllStates, Device, Devices, StateChanges } from '../models';
 import { ReportStateService } from './report-state.service';
 import { RequestSyncService } from './request-sync.service';
 
@@ -107,7 +107,7 @@ export class DevicesRepository {
 
     updateDevicesState(
         ids: string[],
-        changes: Partial<AllStates> | ((state: AllStates) => Partial<AllStates>),
+        changes: Partial<AllStates> | ((device: Device) => Partial<AllStates>),
         { notifyClient = false, requestId, group }: { notifyClient?: boolean, requestId?: string, group?: string } = {}
     ) {
         const groupDevices = this.getDevicesInternal(group);
@@ -118,7 +118,7 @@ export class DevicesRepository {
             if (!device) { continue; }
 
             let hasChanged = false;
-            const deviceChanges = typeof changes === 'function' ? changes(device.state) : changes;
+            const deviceChanges = typeof changes === 'function' ? changes(device) : changes;
             for (const key of Object.keys(deviceChanges)) {
                 if (!(key in device.state)) { continue; }
                 const oldValue = device.state[key];

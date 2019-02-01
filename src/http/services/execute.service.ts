@@ -67,10 +67,11 @@ export class ExecuteService {
             });
             break;
           case ExecuteCommandTypes.VolumeRelative:
-            this.devices.updateDevicesState(deviceIds, deviceState => {
-              if ('currentVolume' in deviceState) {
-                const delta = execution.params.relativeSteps * execution.params.volumeRelativeLevel;
-                const newVolume = Math.min(100, Math.max(0, deviceState.currentVolume + delta));
+            this.devices.updateDevicesState(deviceIds, device => {
+              if (device.type === 'speaker' && 'currentVolume' in device.state) {
+                const relativeStepSize = device.relativeVolumeStep || execution.params.volumeRelativeLevel;
+                const delta = execution.params.relativeSteps * relativeStepSize;
+                const newVolume = Math.min(100, Math.max(0, device.state.currentVolume + delta));
                 return { currentVolume: newVolume };
               }
               return {};
