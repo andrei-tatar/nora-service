@@ -82,6 +82,10 @@ export class SyncService {
                     sync.type = DeviceTypes.Speaker;
                     sync.traits.push(Trait.OnOff, Trait.Volume);
                     break;
+                case 'blinds':
+                    sync.type = DeviceTypes.Blinds;
+                    sync.traits.push(Trait.OpenClose);
+                    break;
             }
             syncDevices.push(sync);
         }

@@ -15,6 +15,3 @@ interface DeviceWithPin extends Device {
     pin: string;
 }
 
-export interface State {
-    online: boolean;
-}

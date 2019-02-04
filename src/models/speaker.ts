@@ -1,17 +1,9 @@
-import { BaseDevice, State } from './device';
-
-export interface SpeakerState extends State {
-    on: boolean;
-    /**
-     * @minimum 0
-     * @maximum 100
-     */
-    currentVolume: number;
-    isMuted: boolean;
-}
+import { BaseDevice } from './device';
+import { OnOffState } from './states/onoff';
+import { VolumeState } from './states/volume';
 
 export type SpeakerDevice = BaseDevice & {
     type: 'speaker';
-    state: SpeakerState;
+    state: VolumeState & OnOffState;
     relativeVolumeStep?: number;
 };

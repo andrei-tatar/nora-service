@@ -6,24 +6,47 @@
                 "$ref": "#/definitions/Partial<State>"
             },
             {
-                "$ref": "#/definitions/Partial<SwitchState>"
+                "$ref": "#/definitions/Partial<OpenCloseState>"
             },
             {
-                "$ref": "#/definitions/Partial<LightState>"
-            },
-            {
-                "$ref": "#/definitions/Partial<LightColorState>"
-            },
-            {
-                "$ref": "#/definitions/Partial<SpeakerState>"
+                "$ref": "#/definitions/Partial<OnOffState>"
             },
             {
                 "$ref": "#/definitions/Partial<ThermostatSingleState>"
+            },
+            {
+                "$ref": "#/definitions/Partial<ThermostatHeatCoolState>"
+            },
+            {
+                "$ref": "#/definitions/Partial<BrightnessState&OnOffState>"
+            },
+            {
+                "$ref": "#/definitions/Partial<ColorState&BrightnessState&OnOffState>"
+            },
+            {
+                "$ref": "#/definitions/Partial<VolumeState&OnOffState>"
             }
         ]
     },
     "definitions": {
-        "Partial<LightColorState>": {
+        "Partial<BrightnessState&OnOffState>": {
+            "additionalProperties": false,
+            "properties": {
+                "brightness": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<ColorState&BrightnessState&OnOffState>": {
             "additionalProperties": false,
             "properties": {
                 "brightness": {
@@ -75,14 +98,9 @@
             },
             "type": "object"
         },
-        "Partial<LightState>": {
+        "Partial<OnOffState>": {
             "additionalProperties": false,
             "properties": {
-                "brightness": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
                 "on": {
                     "type": "boolean"
                 },
@@ -92,22 +110,16 @@
             },
             "type": "object"
         },
-        "Partial<SpeakerState>": {
+        "Partial<OpenCloseState>": {
             "additionalProperties": false,
             "properties": {
-                "currentVolume": {
+                "online": {
+                    "type": "boolean"
+                },
+                "openPercent": {
                     "maximum": 100,
                     "minimum": 0,
                     "type": "number"
-                },
-                "isMuted": {
-                    "type": "boolean"
-                },
-                "on": {
-                    "type": "boolean"
-                },
-                "online": {
-                    "type": "boolean"
                 }
             },
             "type": "object"
@@ -121,14 +133,31 @@
             },
             "type": "object"
         },
-        "Partial<SwitchState>": {
+        "Partial<ThermostatHeatCoolState>": {
             "additionalProperties": false,
             "properties": {
-                "on": {
-                    "type": "boolean"
-                },
                 "online": {
                     "type": "boolean"
+                },
+                "thermostatHumidityAmbient": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "thermostatMode": {
+                    "enum": [
+                        "heatcool"
+                    ],
+                    "type": "string"
+                },
+                "thermostatTemperatureAmbient": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointHigh": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointLow": {
+                    "type": "number"
                 }
             },
             "type": "object"
@@ -163,6 +192,26 @@
                 },
                 "thermostatTemperatureSetpoint": {
                     "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<VolumeState&OnOffState>": {
+            "additionalProperties": false,
+            "properties": {
+                "currentVolume": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "isMuted": {
+                    "type": "boolean"
+                },
+                "on": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
                 }
             },
             "type": "object"

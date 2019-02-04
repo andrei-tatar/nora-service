@@ -45,17 +45,20 @@ export class QueryService {
                 state.thermostatMode = device.state.thermostatMode;
                 state.thermostatTemperatureAmbient = device.state.thermostatTemperatureAmbient;
                 state.thermostatHumidityAmbient = device.state.thermostatHumidityAmbient;
-                // if (device.state.thermostatMode === 'heatcool') {
-                //     state.thermostatTemperatureSetpointHigh = device.state.thermostatTemperatureSetpointHigh;
-                //     state.thermostatTemperatureSetpointLow = device.state.thermostatTemperatureSetpointLow;
-                // } else {
-                state.thermostatTemperatureSetpoint = device.state.thermostatTemperatureSetpoint;
-                // }
+                if (device.state.thermostatMode === 'heatcool') {
+                    state.thermostatTemperatureSetpointHigh = device.state.thermostatTemperatureSetpointHigh;
+                    state.thermostatTemperatureSetpointLow = device.state.thermostatTemperatureSetpointLow;
+                } else {
+                    state.thermostatTemperatureSetpoint = device.state.thermostatTemperatureSetpoint;
+                }
                 break;
             case 'speaker':
                 state.on = device.state.on;
                 state.currentVolume = device.state.currentVolume;
                 state.isMuted = device.state.isMuted;
+                break;
+            case 'blinds':
+                state.openPercent = device.state.openPercent;
                 break;
         }
     }

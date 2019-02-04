@@ -18,11 +18,11 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SwitchState"
+                        "$ref": "#/definitions/OpenCloseState"
                     },
                     "type": {
                         "enum": [
-                            "switch"
+                            "blinds"
                         ],
                         "type": "string"
                     }
@@ -50,7 +50,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SwitchState"
+                        "$ref": "#/definitions/OpenCloseState"
                     },
                     "twoFactor": {
                         "enum": [
@@ -60,7 +60,7 @@
                     },
                     "type": {
                         "enum": [
-                            "switch"
+                            "blinds"
                         ],
                         "type": "string"
                     }
@@ -92,7 +92,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SwitchState"
+                        "$ref": "#/definitions/OpenCloseState"
                     },
                     "twoFactor": {
                         "enum": [
@@ -102,7 +102,7 @@
                     },
                     "type": {
                         "enum": [
-                            "switch"
+                            "blinds"
                         ],
                         "type": "string"
                     }
@@ -144,7 +144,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SwitchState"
+                        "$ref": "#/definitions/OnOffState"
                     },
                     "type": {
                         "enum": [
@@ -189,7 +189,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SwitchState"
+                        "$ref": "#/definitions/OnOffState"
                     },
                     "twoFactor": {
                         "enum": [
@@ -244,7 +244,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SwitchState"
+                        "$ref": "#/definitions/OnOffState"
                     },
                     "twoFactor": {
                         "enum": [
@@ -297,7 +297,26 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/LightState"
+                        "additionalProperties": false,
+                        "properties": {
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "brightness",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
                     },
                     "type": {
                         "enum": [
@@ -342,7 +361,26 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/LightState"
+                        "additionalProperties": false,
+                        "properties": {
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "brightness",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
                     },
                     "twoFactor": {
                         "enum": [
@@ -397,7 +435,26 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/LightState"
+                        "additionalProperties": false,
+                        "properties": {
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "brightness",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
                     },
                     "twoFactor": {
                         "enum": [
@@ -450,7 +507,62 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/LightColorState"
+                        "additionalProperties": false,
+                        "properties": {
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "color": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "spectrumHsv": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "hue": {
+                                                "maximum": 360,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "saturation": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "value": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "hue",
+                                            "saturation",
+                                            "value"
+                                        ],
+                                        "type": "object"
+                                    }
+                                },
+                                "required": [
+                                    "spectrumHsv"
+                                ],
+                                "type": "object"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "brightness",
+                            "color",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
                     },
                     "type": {
                         "enum": [
@@ -496,7 +608,62 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/LightColorState"
+                        "additionalProperties": false,
+                        "properties": {
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "color": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "spectrumHsv": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "hue": {
+                                                "maximum": 360,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "saturation": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "value": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "hue",
+                                            "saturation",
+                                            "value"
+                                        ],
+                                        "type": "object"
+                                    }
+                                },
+                                "required": [
+                                    "spectrumHsv"
+                                ],
+                                "type": "object"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "brightness",
+                            "color",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
                     },
                     "twoFactor": {
                         "enum": [
@@ -552,7 +719,62 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/LightColorState"
+                        "additionalProperties": false,
+                        "properties": {
+                            "brightness": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "color": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "spectrumHsv": {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "hue": {
+                                                "maximum": 360,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "saturation": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            },
+                                            "value": {
+                                                "maximum": 1,
+                                                "minimum": 0,
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "hue",
+                                            "saturation",
+                                            "value"
+                                        ],
+                                        "type": "object"
+                                    }
+                                },
+                                "required": [
+                                    "spectrumHsv"
+                                ],
+                                "type": "object"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "brightness",
+                            "color",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
                     },
                     "twoFactor": {
                         "enum": [
@@ -594,7 +816,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SwitchState"
+                        "$ref": "#/definitions/OnOffState"
                     },
                     "type": {
                         "enum": [
@@ -626,7 +848,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SwitchState"
+                        "$ref": "#/definitions/OnOffState"
                     },
                     "twoFactor": {
                         "enum": [
@@ -668,7 +890,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SwitchState"
+                        "$ref": "#/definitions/OnOffState"
                     },
                     "twoFactor": {
                         "enum": [
@@ -830,11 +1052,37 @@
                         },
                         "type": "array"
                     },
+                    "relativeVolumeStep": {
+                        "type": "number"
+                    },
                     "roomHint": {
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SpeakerState"
+                        "additionalProperties": false,
+                        "properties": {
+                            "currentVolume": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "isMuted": {
+                                "type": "boolean"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "currentVolume",
+                            "isMuted",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
                     },
                     "type": {
                         "enum": [
@@ -862,11 +1110,37 @@
                         },
                         "type": "array"
                     },
+                    "relativeVolumeStep": {
+                        "type": "number"
+                    },
                     "roomHint": {
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SpeakerState"
+                        "additionalProperties": false,
+                        "properties": {
+                            "currentVolume": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "isMuted": {
+                                "type": "boolean"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "currentVolume",
+                            "isMuted",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
                     },
                     "twoFactor": {
                         "enum": [
@@ -904,11 +1178,37 @@
                     "pin": {
                         "type": "string"
                     },
+                    "relativeVolumeStep": {
+                        "type": "number"
+                    },
                     "roomHint": {
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/SpeakerState"
+                        "additionalProperties": false,
+                        "properties": {
+                            "currentVolume": {
+                                "maximum": 100,
+                                "minimum": 0,
+                                "type": "number"
+                            },
+                            "isMuted": {
+                                "type": "boolean"
+                            },
+                            "on": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "currentVolume",
+                            "isMuted",
+                            "on",
+                            "online"
+                        ],
+                        "type": "object"
                     },
                     "twoFactor": {
                         "enum": [
@@ -919,6 +1219,120 @@
                     "type": {
                         "enum": [
                             "speaker"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "type": {
+                        "enum": [
+                            "switch"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "switch"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "$ref": "#/definitions/OnOffState"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "switch"
                         ],
                         "type": "string"
                     }
@@ -966,7 +1380,14 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/ThermostatSingleState"
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/ThermostatSingleState"
+                            },
+                            {
+                                "$ref": "#/definitions/ThermostatHeatCoolState"
+                            }
+                        ]
                     },
                     "temperatureUnit": {
                         "enum": [
@@ -1025,7 +1446,14 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/ThermostatSingleState"
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/ThermostatSingleState"
+                            },
+                            {
+                                "$ref": "#/definitions/ThermostatHeatCoolState"
+                            }
+                        ]
                     },
                     "temperatureUnit": {
                         "enum": [
@@ -1094,7 +1522,14 @@
                         "type": "string"
                     },
                     "state": {
-                        "$ref": "#/definitions/ThermostatSingleState"
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/ThermostatSingleState"
+                            },
+                            {
+                                "$ref": "#/definitions/ThermostatHeatCoolState"
+                            }
+                        ]
                     },
                     "temperatureUnit": {
                         "enum": [
@@ -1130,49 +1565,9 @@
         ]
     },
     "definitions": {
-        "LightColorState": {
+        "OnOffState": {
             "additionalProperties": false,
             "properties": {
-                "brightness": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "color": {
-                    "additionalProperties": false,
-                    "properties": {
-                        "spectrumHsv": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "hue": {
-                                    "maximum": 360,
-                                    "minimum": 0,
-                                    "type": "number"
-                                },
-                                "saturation": {
-                                    "maximum": 1,
-                                    "minimum": 0,
-                                    "type": "number"
-                                },
-                                "value": {
-                                    "maximum": 1,
-                                    "minimum": 0,
-                                    "type": "number"
-                                }
-                            },
-                            "required": [
-                                "hue",
-                                "saturation",
-                                "value"
-                            ],
-                            "type": "object"
-                        }
-                    },
-                    "required": [
-                        "spectrumHsv"
-                    ],
-                    "type": "object"
-                },
                 "on": {
                     "type": "boolean"
                 },
@@ -1181,58 +1576,26 @@
                 }
             },
             "required": [
-                "brightness",
-                "color",
                 "on",
                 "online"
             ],
             "type": "object"
         },
-        "LightState": {
+        "OpenCloseState": {
             "additionalProperties": false,
             "properties": {
-                "brightness": {
+                "online": {
+                    "type": "boolean"
+                },
+                "openPercent": {
                     "maximum": 100,
                     "minimum": 0,
                     "type": "number"
-                },
-                "on": {
-                    "type": "boolean"
-                },
-                "online": {
-                    "type": "boolean"
                 }
             },
             "required": [
-                "brightness",
-                "on",
-                "online"
-            ],
-            "type": "object"
-        },
-        "SpeakerState": {
-            "additionalProperties": false,
-            "properties": {
-                "currentVolume": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "isMuted": {
-                    "type": "boolean"
-                },
-                "on": {
-                    "type": "boolean"
-                },
-                "online": {
-                    "type": "boolean"
-                }
-            },
-            "required": [
-                "currentVolume",
-                "isMuted",
-                "on",
-                "online"
+                "online",
+                "openPercent"
             ],
             "type": "object"
         },
@@ -1248,19 +1611,39 @@
             ],
             "type": "object"
         },
-        "SwitchState": {
+        "ThermostatHeatCoolState": {
             "additionalProperties": false,
             "properties": {
-                "on": {
-                    "type": "boolean"
-                },
                 "online": {
                     "type": "boolean"
+                },
+                "thermostatHumidityAmbient": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "thermostatMode": {
+                    "enum": [
+                        "heatcool"
+                    ],
+                    "type": "string"
+                },
+                "thermostatTemperatureAmbient": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointHigh": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointLow": {
+                    "type": "number"
                 }
             },
             "required": [
-                "on",
-                "online"
+                "online",
+                "thermostatMode",
+                "thermostatTemperatureAmbient",
+                "thermostatTemperatureSetpointHigh",
+                "thermostatTemperatureSetpointLow"
             ],
             "type": "object"
         },

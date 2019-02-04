@@ -1,8 +1,8 @@
 import { BaseDevice } from './device';
-import { SwitchState } from './switch';
+import { OnOffState } from './states/onoff';
 
 export type OutletDevice = BaseDevice & {
     type: 'outlet';
-    state: SwitchState;
+    state: OnOffState;
 };
 

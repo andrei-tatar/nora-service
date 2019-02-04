@@ -18,6 +18,7 @@ export enum ExecuteCommandTypes {
     ThermostatSetMode = 'action.devices.commands.ThermostatSetMode',
     SetVolume = 'action.devices.commands.setVolume',
     VolumeRelative = 'action.devices.commands.volumeRelative',
+    OpenClose = 'action.devices.commands.OpenClose',
 }
 
 export interface ExecuteCommand {
