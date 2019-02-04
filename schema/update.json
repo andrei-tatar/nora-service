@@ -12,10 +12,7 @@
                 "$ref": "#/definitions/Partial<OnOffState>"
             },
             {
-                "$ref": "#/definitions/Partial<ThermostatSingleState>"
-            },
-            {
-                "$ref": "#/definitions/Partial<ThermostatHeatCoolState>"
+                "$ref": "#/definitions/Partial<Thermostat>"
             },
             {
                 "$ref": "#/definitions/Partial<BrightnessState&OnOffState>"
@@ -133,36 +130,7 @@
             },
             "type": "object"
         },
-        "Partial<ThermostatHeatCoolState>": {
-            "additionalProperties": false,
-            "properties": {
-                "online": {
-                    "type": "boolean"
-                },
-                "thermostatHumidityAmbient": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "thermostatMode": {
-                    "enum": [
-                        "heatcool"
-                    ],
-                    "type": "string"
-                },
-                "thermostatTemperatureAmbient": {
-                    "type": "number"
-                },
-                "thermostatTemperatureSetpointHigh": {
-                    "type": "number"
-                },
-                "thermostatTemperatureSetpointLow": {
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "Partial<ThermostatSingleState>": {
+        "Partial<Thermostat>": {
             "additionalProperties": false,
             "properties": {
                 "online": {
@@ -181,6 +149,7 @@
                         "eco",
                         "fan-only",
                         "heat",
+                        "heatcool",
                         "off",
                         "on",
                         "purifier"
@@ -191,6 +160,12 @@
                     "type": "number"
                 },
                 "thermostatTemperatureSetpoint": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointHigh": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointLow": {
                     "type": "number"
                 }
             },

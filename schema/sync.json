@@ -1380,14 +1380,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/ThermostatSingleState"
-                            },
-                            {
-                                "$ref": "#/definitions/ThermostatHeatCoolState"
-                            }
-                        ]
+                        "$ref": "#/definitions/Thermostat"
                     },
                     "temperatureUnit": {
                         "enum": [
@@ -1446,14 +1439,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/ThermostatSingleState"
-                            },
-                            {
-                                "$ref": "#/definitions/ThermostatHeatCoolState"
-                            }
-                        ]
+                        "$ref": "#/definitions/Thermostat"
                     },
                     "temperatureUnit": {
                         "enum": [
@@ -1522,14 +1508,7 @@
                         "type": "string"
                     },
                     "state": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/ThermostatSingleState"
-                            },
-                            {
-                                "$ref": "#/definitions/ThermostatHeatCoolState"
-                            }
-                        ]
+                        "$ref": "#/definitions/Thermostat"
                     },
                     "temperatureUnit": {
                         "enum": [
@@ -1611,7 +1590,7 @@
             ],
             "type": "object"
         },
-        "ThermostatHeatCoolState": {
+        "Thermostat": {
             "additionalProperties": false,
             "properties": {
                 "online": {
@@ -1623,12 +1602,12 @@
                     "type": "number"
                 },
                 "thermostatMode": {
-                    "enum": [
-                        "heatcool"
-                    ],
-                    "type": "string"
+                    "$ref": "#/definitions/ThermostatMode"
                 },
                 "thermostatTemperatureAmbient": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpoint": {
                     "type": "number"
                 },
                 "thermostatTemperatureSetpointHigh": {
@@ -1641,13 +1620,11 @@
             "required": [
                 "online",
                 "thermostatMode",
-                "thermostatTemperatureAmbient",
-                "thermostatTemperatureSetpointHigh",
-                "thermostatTemperatureSetpointLow"
+                "thermostatTemperatureAmbient"
             ],
             "type": "object"
         },
-        "ThermostatModeSingle": {
+        "ThermostatMode": {
             "enum": [
                 "auto",
                 "cool",
@@ -1655,40 +1632,12 @@
                 "eco",
                 "fan-only",
                 "heat",
+                "heatcool",
                 "off",
                 "on",
                 "purifier"
             ],
             "type": "string"
-        },
-        "ThermostatSingleState": {
-            "additionalProperties": false,
-            "properties": {
-                "online": {
-                    "type": "boolean"
-                },
-                "thermostatHumidityAmbient": {
-                    "maximum": 100,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "thermostatMode": {
-                    "$ref": "#/definitions/ThermostatModeSingle"
-                },
-                "thermostatTemperatureAmbient": {
-                    "type": "number"
-                },
-                "thermostatTemperatureSetpoint": {
-                    "type": "number"
-                }
-            },
-            "required": [
-                "online",
-                "thermostatMode",
-                "thermostatTemperatureAmbient",
-                "thermostatTemperatureSetpoint"
-            ],
-            "type": "object"
         }
     },
     "type": "object"
