@@ -16,12 +16,16 @@ export class QueryService {
         const userDevices = this.devices.getDevicesById(queryIds);
         const devices: QueryDevices = {};
         for (const [index, device] of userDevices.entries()) {
-            const state: QueryDevice = {
-                online: device.state.online,
-            };
-            this.updateQueryState(state, device);
             const id = queryIds[index];
-            devices[id] = state;
+            if (!device) {
+                devices[id] = { online: false };
+            } else {
+                const state: QueryDevice = {
+                    online: device.state.online,
+                };
+                this.updateQueryState(state, device);
+                devices[id] = state;
+            }
         }
         return { devices };
     }
