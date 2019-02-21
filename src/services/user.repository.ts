@@ -1,5 +1,5 @@
+import { Injectable } from '@andrei-tatar/ts-ioc';
 import { Subject } from 'rxjs';
-import { Injectable } from '../ioc';
 import { PostgressService } from './postgress.service';
 
 @Injectable()

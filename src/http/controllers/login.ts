@@ -1,5 +1,5 @@
+import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 import * as config from '../../config';
-import { Inject, Lazy } from '../../ioc';
 import { FirebaseService } from '../../services/firebase.service';
 import { JwtService } from '../../services/jwt.service';
 import { NoderedTokenService } from '../../services/nodered-token.service';

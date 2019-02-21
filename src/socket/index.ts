@@ -1,7 +1,7 @@
 import { Server } from 'http';
 import * as createSocketServer from 'socket.io';
 
-import { Container } from '../ioc';
+import { Container } from '@andrei-tatar/ts-ioc';
 import { ConnectionHandler } from './connectionhandler';
 import { registerBindedEvents } from './decorators/bindevent';
 import { authenticationMiddleware } from './middlewares/authentication.middleware';

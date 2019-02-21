@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
+import { Inject } from '@andrei-tatar/ts-ioc';
 import { googleProjectApiKey } from '../config';
-import { Inject } from '../ioc';
 import { delay } from '../util';
 import { UserRepository } from './user.repository';
 

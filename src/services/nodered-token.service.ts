@@ -1,4 +1,4 @@
-import { Injectable } from '../ioc';
+import { Injectable } from '@andrei-tatar/ts-ioc';
 import { JwtService } from './jwt.service';
 
 interface NoderedToken {

@@ -1,9 +1,9 @@
+import { Container, Lifetime } from '@andrei-tatar/ts-ioc';
 import controllers from './http/controllers';
 import { DisconnectService } from './http/services/disconnect.service';
 import { ExecuteService } from './http/services/execute.service';
 import { QueryService } from './http/services/query.service';
 import { SyncService } from './http/services/sync.service';
-import { Container, Lifetime } from './ioc';
 import { DevicesRepository } from './services/devices.repository';
 import { FirebaseService } from './services/firebase.service';
 import { JwtService } from './services/jwt.service';

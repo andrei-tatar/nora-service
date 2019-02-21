@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
+import { Inject } from '@andrei-tatar/ts-ioc';
 import { serviceAccountIssuer, serviceAccountPrivateKey } from '../config';
-import { Inject } from '../ioc';
 import { StateChanges } from '../models';
 import { delay } from '../util';
 import { JwtService } from './jwt.service';

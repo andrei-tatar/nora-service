@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { readFile } from 'fs';
 import { join } from 'path';
 
-import { Inject } from '../../ioc';
+import { Inject } from '@andrei-tatar/ts-ioc';
 
 export abstract class Controller {
     private static templateCache: _.Dictionary<Promise<string>> = {};

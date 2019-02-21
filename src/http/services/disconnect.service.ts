@@ -1,4 +1,4 @@
-import { Inject } from '../../ioc';
+import { Inject } from '@andrei-tatar/ts-ioc';
 import { UserRepository } from '../../services/user.repository';
 
 export class DisconnectService {

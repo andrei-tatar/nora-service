@@ -1,5 +1,5 @@
+import { Container } from '@andrei-tatar/ts-ioc';
 import { Socket } from 'socket.io';
-import { Container } from '../../ioc';
 
 export function childContainerMiddleware(container: Container) {
     return (socket: Socket, next: (err?: any) => void) => {

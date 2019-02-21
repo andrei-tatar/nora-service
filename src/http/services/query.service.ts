@@ -1,5 +1,5 @@
+import { Injectable } from '@andrei-tatar/ts-ioc';
 import { QueryDevice, QueryDevices, QueryInput, QueryPayload } from '../../google';
-import { Injectable } from '../../ioc';
 import { Device } from '../../models';
 import { DevicesRepository } from '../../services/devices.repository';
 

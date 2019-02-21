@@ -1,5 +1,5 @@
+import { Container } from '@andrei-tatar/ts-ioc';
 import { NextFunction, Request, Response } from 'express';
-import { Container } from '../../ioc';
 
 declare module 'express' {
     export interface Request {

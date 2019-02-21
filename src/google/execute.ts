@@ -50,7 +50,7 @@ export interface ExecutePayloadCommand {
     errorCode?: string;
     debugString?: string;
     states?: {
-        online?: boolean;
+        online: boolean;
         [param: string]: boolean | number | string;
     };
     challengeNeeded?: { type: 'pinNeeded' | 'ackNeeded' | 'challengeFailedPinNeeded' };

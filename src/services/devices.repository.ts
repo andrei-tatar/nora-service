@@ -2,7 +2,7 @@ import { cloneDeep, isEqual, Omit } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-import { Inject } from '../ioc';
+import { Inject } from '@andrei-tatar/ts-ioc';
 import { AllStates, Device, Devices, StateChanges } from '../models';
 import { ReportStateService } from './report-state.service';
 import { RequestSyncService } from './request-sync.service';

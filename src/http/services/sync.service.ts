@@ -1,7 +1,7 @@
 import { uniq } from 'lodash';
 
+import { Inject } from '@andrei-tatar/ts-ioc';
 import { DeviceTypes, SyncDevice, SyncPayload, Trait } from '../../google';
-import { Inject } from '../../ioc';
 import { Devices, StateChanges } from '../../models';
 import { DevicesRepository } from '../../services/devices.repository';
 import { ReportStateService } from '../../services/report-state.service';

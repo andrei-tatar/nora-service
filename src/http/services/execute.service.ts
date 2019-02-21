@@ -1,11 +1,11 @@
 import { uniq } from 'lodash';
 
+import { Injectable } from '@andrei-tatar/ts-ioc';
 import {
   ExecuteCommandTypes, ExecuteInput, ExecutePayload,
   ExecuteStatus
 } from '../../google';
 import { CommandExecution, ExecutePayloadCommand } from '../../google/execute';
-import { Injectable } from '../../ioc';
 import { DevicesRepository } from '../../services/devices.repository';
 
 interface ResponseState {

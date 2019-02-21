@@ -2,7 +2,7 @@ import { BehaviorSubject, EMPTY, Subject } from 'rxjs';
 import { distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 import { Socket } from 'socket.io';
 
-import { Destroyable, Inject } from '../ioc';
+import { Destroyable, Inject } from '@andrei-tatar/ts-ioc';
 import { DevicesRepository } from '../services/devices.repository';
 import { ValidationService } from '../services/validation.service';
 import { BindEvent } from './decorators/bindevent';
