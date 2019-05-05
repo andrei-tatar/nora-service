@@ -19,8 +19,6 @@ export class ConnectionHandler implements Destroyable {
         private userDevices: DevicesRepository,
         private validation: ValidationService,
     ) {
-        console.log(`${socket.uid}:${group} connected ${notify}`);
-
         userDevices.stateChanges$.pipe(
             filter(c => c.hasChanges || notify),
             map(c => c.stateChanges),

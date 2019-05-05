@@ -116,6 +116,7 @@ export class DevicesRepository {
     ) {
         const groupDevices = this.getDevicesInternal(group);
         const stateChanges: StateChanges = {};
+        const notiyClientChanges: StateChanges = {};
         let anyChange = false;
         for (const id of ids) {
             const device = groupDevices[id];
@@ -127,16 +128,18 @@ export class DevicesRepository {
                 if (!(key in device.state)) { continue; }
                 const oldValue = device.state[key];
                 const newValue = deviceChanges[key];
-                if (typeof oldValue === typeof newValue && !isEqual(oldValue, newValue)) {
-                    device.state[key] = cloneDeep(newValue);
-                    hasChanged = true;
+                if (typeof oldValue === typeof newValue) {
+                    device.state[key] = newValue;
+                    hasChanged = !isEqual(oldValue, newValue);
                 }
             }
 
             if (hasChanged) {
-                stateChanges[id] = cloneDeep(device.state);
+                stateChanges[id] = device.state;
                 anyChange = true;
             }
+
+            notiyClientChanges[id] = device.state;
         }
 
         if (anyChange) {
@@ -148,7 +151,7 @@ export class DevicesRepository {
         if (notifyClient) {
             DevicesRepository.statechanges.next({
                 uid: this.uid,
-                stateChanges,
+                stateChanges: notiyClientChanges,
                 hasChanges: anyChange,
             });
         }
