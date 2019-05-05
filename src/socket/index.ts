@@ -19,7 +19,6 @@ export function initWebSocketListener(server: Server, container: Container) {
     io.use(oneConnectionPerUserMiddleware());
     io.on('connect', socket => {
         try {
-            console.log(`${socket.uid} connected with params: ${JSON.stringify({ ...socket.handshake.query, token: undefined })}`);
             const instance = socket.container.resolve(ConnectionHandler);
             registerBindedEvents(instance, socket);
         } catch (err) {
