@@ -6,6 +6,7 @@ export function childContainerMiddleware(container: Container) {
         socket.container = container.createChild();
         socket.container.register({ token: 'socket', useValue: socket });
         socket.container.register({ token: 'uid', useFactory: () => socket.uid });
+        socket.container.register({ token: 'notify', useValue: socket.handshake.query.notify === 'true' });
         socket.container.register({ token: 'group', useValue: socket.handshake.query.group || '' });
         socket.once('disconnect', () => {
             try {

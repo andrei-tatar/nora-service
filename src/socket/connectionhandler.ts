@@ -1,5 +1,5 @@
 import { BehaviorSubject, EMPTY, Subject } from 'rxjs';
-import { distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { Socket } from 'socket.io';
 
 import { Destroyable, Inject } from '@andrei-tatar/ts-ioc';
@@ -13,14 +13,15 @@ export class ConnectionHandler implements Destroyable {
     private devicesSynced$ = new BehaviorSubject(false);
 
     constructor(
-        @Inject('socket')
-        socket: Socket,
+        @Inject('socket') socket: Socket,
+        @Inject('group') private group: string,
+        @Inject('notify') notify: boolean,
         private userDevices: DevicesRepository,
-        @Inject('group')
-        private group: string,
         private validation: ValidationService,
     ) {
         userDevices.stateChanges$.pipe(
+            filter(c => c.hasChanges || notify),
+            map(c => c.stateChanges),
             takeUntil(this.destroy$)
         ).subscribe(changes => {
             const update: UpdateDevices = { ...changes };

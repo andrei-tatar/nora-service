@@ -9,7 +9,11 @@ import { RequestSyncService } from './request-sync.service';
 
 export class DevicesRepository {
     private static commands = new Subject<Command>();
-    private static statechanges = new Subject<{ uid: string, stateChanges: StateChanges }>();
+    private static statechanges = new Subject<{
+        uid: string;
+        stateChanges: StateChanges;
+        hasChanges: boolean;
+    }>();
     private static onlineUsers: {
         [uid: string]: {
             [group: string]: string;
@@ -33,7 +37,7 @@ export class DevicesRepository {
         return DevicesRepository.devicesPerUser;
     }
 
-    readonly stateChanges$ = DevicesRepository.statechanges.pipe(filter(c => c.uid === this.uid), map(c => c.stateChanges));
+    readonly stateChanges$ = DevicesRepository.statechanges.pipe(filter(c => c.uid === this.uid));
     readonly commands$ = DevicesRepository.commands.pipe(filter(c => c.uid === this.uid), map(c => c as Omit<Command, 'uid'>));
 
     constructor(
@@ -139,10 +143,14 @@ export class DevicesRepository {
             this.reportStateService.reportState(stateChanges, requestId).catch(err => {
                 console.warn('err while reporting state', err);
             });
+        }
 
-            if (notifyClient) {
-                DevicesRepository.statechanges.next({ uid: this.uid, stateChanges });
-            }
+        if (notifyClient) {
+            DevicesRepository.statechanges.next({
+                uid: this.uid,
+                stateChanges,
+                hasChanges: anyChange,
+            });
         }
     }
 
