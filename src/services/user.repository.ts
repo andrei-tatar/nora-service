@@ -38,20 +38,33 @@ export class UserRepository {
         if (rows && rows.length === 1) { return rows[0].refreshtoken; }
         return null;
     }
+
+    async getNodeRedTokenVersion(uid: string): Promise<number> {
+        const rows = await this.postgress.query<User>(`SELECT noderedversion FROM appuser WHERE uid = $1`, uid);
+        if (rows && rows.length === 1) { return rows[0].noderedversion; }
+        return 1;
+    }
+
+    async incrementNoderedTokenVersion(uid: string): Promise<void> {
+        await this.postgress.query(`UPDATE appuser SET noderedversion = noderedversion + 1 WHERE uid = $1`, uid);
+    }
 }
 
 // (async function () {
 //     const service = new PostgressService();
-//     await service.query(`
-//         CREATE TABLE IF NOT EXISTS appuser (
-//             uid VARCHAR(30) CONSTRAINT pk PRIMARY KEY,
-//             linked boolean DEFAULT false
-//         )`
-//     );
+//     // await service.query(`
+//     //     CREATE TABLE IF NOT EXISTS appuser (
+//     //         uid VARCHAR(30) CONSTRAINT pk PRIMARY KEY,
+//     //         linked boolean DEFAULT false
+//     //     )`
+//     // );
 
-//     // await service.query('ALTER TABLE appuser ADD COLUMN refreshtoken integer DEFAULT 1');
-//     const users = await service.query('select * from appuser');
-//     console.log(users);
+//     // await service.query('ALTER TABLE appuser ADD COLUMN noderedversion integer DEFAULT 1');
+//     const repo = new UserRepository(service);
+//     // await repo.incrementNoderedTokenVersion('ARcEql2ileYghxMOstan2bOsSEj1');
+//     // const users = await service.query('select * from appuser');
+
+//     console.log(await repo.getUser('ARcEql2ileYghxMOstan2bOsSEj1'));
 
 // })().catch(err => {
 //     console.error(err);
@@ -62,5 +75,6 @@ export class UserRepository {
 export interface User {
     readonly uid: string;
     refreshtoken: number;
+    noderedversion: number;
     linked: boolean;
 }

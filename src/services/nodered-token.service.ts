@@ -1,5 +1,6 @@
 import { Injectable } from '@andrei-tatar/ts-ioc';
 import { JwtService } from './jwt.service';
+import { UserRepository } from './user.repository';
 
 interface NoderedToken {
     uid: string;
@@ -11,14 +12,15 @@ interface NoderedToken {
 export class NoderedTokenService {
     constructor(
         private jwtService: JwtService,
+        private userRepo: UserRepository,
     ) {
     }
 
-    generateToken(uid: string) {
+    async generateToken(uid: string) {
         const token: NoderedToken = {
             uid: uid,
             scope: 'node-red',
-            version: 1,
+            version: await this.userRepo.getNodeRedTokenVersion(uid),
         };
         return this.jwtService.sign(token);
     }
@@ -27,6 +29,10 @@ export class NoderedTokenService {
         const decoded = await this.jwtService.verify<NoderedToken>(token);
         if (decoded.scope !== 'node-red') {
             throw new Error('invalid scope');
+        }
+        const version = await this.userRepo.getNodeRedTokenVersion(decoded.uid);
+        if (version !== decoded.version) {
+            throw new Error('token revoked');
         }
         return decoded.uid;
     }
