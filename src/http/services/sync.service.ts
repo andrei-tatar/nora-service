@@ -76,6 +76,9 @@ export class SyncService {
                     sync.attributes = {
                         availableThermostatModes: uniq(device.availableModes).join(','),
                         thermostatTemperatureUnit: device.temperatureUnit,
+                        bufferRangeCelsius: device.bufferRangeCelsius,
+                        commandOnlyTemperatureSetting: device.commandOnlyTemperatureSetting,
+                        queryOnlyTemperatureSetting: device.queryOnlyTemperatureSetting,
                     };
                     break;
                 case 'speaker':
