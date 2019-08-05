@@ -67,6 +67,21 @@ export class ExecuteService {
               notifyClient: true,
             });
             break;
+          case ExecuteCommandTypes.TemperatureRelative:
+            this.devices.updateDevicesState(deviceIds, device => {
+              if (device.type === 'thermostat') {
+                const { thermostatTemperatureRelativeDegree, thermostatTemperatureRelativeWeight } = execution.params;
+                const change = thermostatTemperatureRelativeDegree || (thermostatTemperatureRelativeWeight / 2);
+                return {
+                  thermostatTemperatureSetpoint: device.state + change,
+                };
+              }
+              return {};
+            }, {
+                requestId,
+                notifyClient: true,
+              });
+            break;
           case ExecuteCommandTypes.VolumeRelative:
             this.devices.updateDevicesState(deviceIds, device => {
               if (device.type === 'speaker' && 'currentVolume' in device.state) {

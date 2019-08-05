@@ -16,6 +16,7 @@ export enum ExecuteCommandTypes {
     ThermostatTemperatureSetpoint = 'action.devices.commands.ThermostatTemperatureSetpoint',
     ThermostatTemperatureSetRange = 'action.devices.commands.ThermostatTemperatureSetRange',
     ThermostatSetMode = 'action.devices.commands.ThermostatSetMode',
+    TemperatureRelative = 'action.devices.commands.TemperatureRelative',
     SetVolume = 'action.devices.commands.setVolume',
     VolumeRelative = 'action.devices.commands.volumeRelative',
     OpenClose = 'action.devices.commands.OpenClose',
