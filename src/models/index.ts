@@ -5,6 +5,7 @@ import { SceneDevice } from './scene';
 import { SpeakerDevice } from './speaker';
 import { SwitchDevice } from './switch';
 import { ThermostatDevice } from './thermostat';
+import { GarageDevice } from './garage';
 
 export interface Devices {
     [id: string]: Device;
