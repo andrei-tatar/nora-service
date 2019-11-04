@@ -50,4 +50,5 @@ export enum DeviceTypes {
     Thermostat = 'action.devices.types.THERMOSTAT',
     Speaker = 'action.devices.types.SPEAKER',
     Blinds = 'action.devices.types.BLINDS',
+    Garage = 'action.devices.types.GARAGE',
 }

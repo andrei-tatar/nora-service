@@ -89,6 +89,10 @@ export class SyncService {
                     sync.type = DeviceTypes.Blinds;
                     sync.traits.push(Trait.OpenClose);
                     break;
+                case 'garage':
+                    sync.type = DeviceTypes.Garage;
+                    sync.traits.push(Trait.OpenClose);
+                    break;
             }
             syncDevices.push(sync);
         }
