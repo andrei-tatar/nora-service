@@ -62,6 +62,7 @@ export class QueryService {
                 state.isMuted = device.state.isMuted;
                 break;
             case 'blinds':
+            case 'garage':
                 state.openPercent = device.state.openPercent;
                 break;
         }
