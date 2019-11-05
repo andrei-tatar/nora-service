@@ -36,6 +36,7 @@ export enum Trait {
     Brightness = 'action.devices.traits.Brightness',
     ColorSetting = 'action.devices.traits.ColorSetting',
     OnOff = 'action.devices.traits.OnOff',
+	LockUnlock = 'action.devices.traits.LockUnlock',
     Scene = 'action.devices.traits.Scene',
     TemperatureSetting = 'action.devices.traits.TemperatureSetting',
     Volume = 'action.devices.traits.Volume',
@@ -51,4 +52,5 @@ export enum DeviceTypes {
     Speaker = 'action.devices.types.SPEAKER',
     Blinds = 'action.devices.types.BLINDS',
     Garage = 'action.devices.types.GARAGE',
+	Lock = 'action.devices.types.LOCK',
 }
