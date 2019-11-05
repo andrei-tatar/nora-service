@@ -93,6 +93,10 @@ export class SyncService {
                     sync.type = DeviceTypes.Garage;
                     sync.traits.push(Trait.OpenClose);
                     break;
+				case 'lock':
+					sync.type = DeviceTypes.Lock;
+					syc.traits.push(Trait.LockUnlock);
+					break;
             }
             syncDevices.push(sync);
         }
