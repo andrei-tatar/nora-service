@@ -47,6 +47,7 @@ export class ExecuteService {
         switch (execution.command) {
           case ExecuteCommandTypes.Brightness:
           case ExecuteCommandTypes.OnOff:
+		  case ExecuteCommandTypes.LockUnlock:
           case ExecuteCommandTypes.ColorAbsolute:
           case ExecuteCommandTypes.ThermostatTemperatureSetpoint:
           case ExecuteCommandTypes.ThermostatTemperatureSetRange:
