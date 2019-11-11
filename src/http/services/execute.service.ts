@@ -47,12 +47,12 @@ export class ExecuteService {
         switch (execution.command) {
           case ExecuteCommandTypes.Brightness:
           case ExecuteCommandTypes.OnOff:
-		  case ExecuteCommandTypes.LockUnlock:
+          case ExecuteCommandTypes.LockUnlock:
           case ExecuteCommandTypes.ColorAbsolute:
           case ExecuteCommandTypes.ThermostatTemperatureSetpoint:
           case ExecuteCommandTypes.ThermostatTemperatureSetRange:
           case ExecuteCommandTypes.ThermostatSetMode:
-		  case ExecuteCommandTypes.FanSpeed:
+          case ExecuteCommandTypes.FanSpeed:
           case ExecuteCommandTypes.OpenClose:
             this.devices.updateDevicesState(deviceIds, execution.params, {
               requestId,
