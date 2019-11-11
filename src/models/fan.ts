@@ -10,7 +10,7 @@ export type FanDevice = BaseDevice & {
 
 export type FanDeviceWithFanSpeed = BaseDevice & {
     type: 'fan`';
-	availableSpeeds: availableFanSpeed[];
+    availableSpeeds: availableFanSpeed[];
     fanSpeedControl: true;
     state: FanSpeeedState & OnOffState;
 };
