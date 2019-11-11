@@ -52,7 +52,7 @@ export class ExecuteService {
           case ExecuteCommandTypes.ThermostatTemperatureSetpoint:
           case ExecuteCommandTypes.ThermostatTemperatureSetRange:
           case ExecuteCommandTypes.ThermostatSetMode:
-          case ExecuteCommandTypes.FanSpeed:
+          case ExecuteCommandTypes.SetFanSpeed:
           case ExecuteCommandTypes.OpenClose:
             this.devices.updateDevicesState(deviceIds, execution.params, {
               requestId,
