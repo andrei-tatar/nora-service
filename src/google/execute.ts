@@ -20,8 +20,8 @@ export enum ExecuteCommandTypes {
     SetVolume = 'action.devices.commands.setVolume',
     VolumeRelative = 'action.devices.commands.volumeRelative',
     OpenClose = 'action.devices.commands.OpenClose',
-	LockUnlock = 'action.devices.commands.LockUnlock',
-	SetFanSpeed = 'action.devices.commands.SetFanSpeed',
+    LockUnlock = 'action.devices.commands.LockUnlock',
+    SetFanSpeed = 'action.devices.commands.SetFanSpeed',
 }
 
 export interface ExecuteCommand {
