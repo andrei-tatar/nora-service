@@ -97,14 +97,14 @@ export class SyncService {
                     sync.type = DeviceTypes.Lock;
                     sync.traits.push(Trait.LockUnlock);
                     break;
-                case "fan":
+                case 'fan':
                     sync.type = DeviceTypes.Fan
                     sync.traits.push(Trait.OnOff);
                     if (device.fanSpeedControl){
                         sync.traits.push(Trait.FanSpeed);
                         sync.attributes = { availableFanSpeeds: uniq(device.availableFanSpeeds.join(',')};
                     };
-                    beak;
+                    break;
             }
             syncDevices.push(sync);
         }
