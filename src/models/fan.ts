@@ -1,6 +1,6 @@
 import { BaseDevice } from './device';
 import { OnOffState } from './states/onoff';
-import ( fanSpeedState ) from './states/fanspeed';
+import ( fanSpeedState, availableFanSpeeds ) from './states/fanspeed';
 
 export type FanDevice = BaseDevice & {
     type: 'fan';
