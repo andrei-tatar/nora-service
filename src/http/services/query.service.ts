@@ -67,7 +67,6 @@ export class QueryService {
                 break;
             case 'lock':
                 state.isLocked = device.state.isLocked;
-                state.isJammed = device.state.isJammed;
                 break;               
         }
     }
