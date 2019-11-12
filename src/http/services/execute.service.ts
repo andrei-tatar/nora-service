@@ -47,7 +47,6 @@ export class ExecuteService {
         switch (execution.command) {
           case ExecuteCommandTypes.Brightness:
           case ExecuteCommandTypes.OnOff:
-          case ExecuteCommandTypes.LockUnlock:
           case ExecuteCommandTypes.ColorAbsolute:
           case ExecuteCommandTypes.ThermostatTemperatureSetpoint:
           case ExecuteCommandTypes.ThermostatTemperatureSetRange:
@@ -57,6 +56,10 @@ export class ExecuteService {
               requestId,
               notifyClient: true,
             });
+            break;
+          case ExecuteCommandTypes.LockUnlock:
+            const lock: boolean = typeof execution.params.lock === 'boolean' ? execution.params.lock : true;
+            this.devices.LockUnlock(deviceIds, lock);         
             break;
           case ExecuteCommandTypes.ActivateScene:
             const deactivate: boolean = typeof execution.params.deactivate === 'boolean' ? execution.params.deactivate : false;
