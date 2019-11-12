@@ -41,7 +41,6 @@ export enum Trait {
     TemperatureSetting = 'action.devices.traits.TemperatureSetting',
     Volume = 'action.devices.traits.Volume',
     OpenClose = 'action.devices.traits.OpenClose',
-    FanSpeed = 'action.devices.traits.FanSpeed',
 }
 
 export enum DeviceTypes {
@@ -54,5 +53,4 @@ export enum DeviceTypes {
     Blinds = 'action.devices.types.BLINDS',
     Garage = 'action.devices.types.GARAGE',
     Lock = 'action.devices.types.LOCK',
-    Fan = 'action.devices.types.FAN',
 }
