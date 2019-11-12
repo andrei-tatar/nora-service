@@ -70,7 +70,7 @@ export class QueryService {
                 state.isJammed = device.state.isJammed;
                 break;
             case 'fan':
-                state.on - device.state.on;
+                state.on = device.state.on;
                 if (device.fanSpeedControl) {
                     state.currentFanSpeedSetting = device.state.currentFanSeedSetting || 'off';
                 }
