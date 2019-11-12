@@ -1,5 +1,4 @@
 import { BlindsDevice } from './blinds';
-import ( FanDevice ) from './fan';
 import { GarageDevice } from './garage';
 import { LightDevice, LightDeviceWithBrightness, LightDeviceWithColor } from './light';
 import { LockDevice } from './lock';
@@ -15,7 +14,7 @@ export interface Devices {
 
 export type Device = SwitchDevice | LightDevice | LightDeviceWithBrightness |
     LightDeviceWithColor | SceneDevice | OutletDevice | ThermostatDevice |
-    SpeakerDevice | BlindsDevice | GarageDevice | LockDevice | FanDevice | FanDeviceWithFanSpeed;
+    SpeakerDevice | BlindsDevice | GarageDevice | LockDevice;
 
 export type AllStates = Device['state'];
 
