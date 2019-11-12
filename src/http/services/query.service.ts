@@ -68,14 +68,7 @@ export class QueryService {
             case 'lock':
                 state.isLocked = device.state.isLocked;
                 state.isJammed = device.state.isJammed;
-                break;
-            case 'fan':
-                state.on = device.state.on;
-                if (device.fanSpeedControl) {
-                    state.currentFanSpeedSetting = device.state.currentFanSeedSetting || 'off';
-                }
-                break;
-                
+                break;               
         }
     }
 }
