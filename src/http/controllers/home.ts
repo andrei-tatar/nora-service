@@ -14,7 +14,7 @@ export class HomeController extends Controller {
         @Inject(UserRepository) private userRepo: Lazy<UserRepository>,
         @Inject(NoderedTokenService) private nrtokenService: Lazy<NoderedTokenService>,
         @Inject(JwtService) private jwtService: Lazy<JwtService>,
-        @Inject(JwtService) private devices: Lazy<DevicesRepository>,
+        @Inject(DevicesRepository) private devices: Lazy<DevicesRepository>,
     ) {
         super();
     }
