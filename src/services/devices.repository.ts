@@ -128,10 +128,8 @@ export class DevicesRepository {
                 if (!(key in device.state)) { continue; }
                 const oldValue = device.state[key];
                 const newValue = deviceChanges[key];
-                if (typeof oldValue === typeof newValue) {
-                    device.state[key] = newValue;
-                    hasChanged = !isEqual(oldValue, newValue);
-                }
+                device.state[key] = newValue;
+                hasChanged = !isEqual(oldValue, newValue);
             }
 
             if (hasChanged) {
