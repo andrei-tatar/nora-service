@@ -125,7 +125,6 @@ export class DevicesRepository {
             let hasChanged = false;
             const deviceChanges = typeof changes === 'function' ? changes(device) : changes;
             for (const key of Object.keys(deviceChanges)) {
-                if (!(key in device.state)) { continue; }
                 const oldValue = device.state[key];
                 const newValue = deviceChanges[key];
                 device.state[key] = newValue;

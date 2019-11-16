@@ -26,12 +26,14 @@ export class HomeController extends Controller {
         }
 
         const userDevices = this.devices.value.allDevices[this.request.token.uid];
-        const userDevicesHtml = JSON.stringify(userDevices, null, 2)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
+        const userDevicesHtml = userDevices
+            ? JSON.stringify(userDevices, null, 2)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;')
+            : 'No devices';
         const token = await this.request.token.nodered;
         return await this.renderTemplate('home', { token, userDevicesJson: userDevicesHtml });
     }
