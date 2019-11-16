@@ -1,5 +1,6 @@
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 import * as config from '../../config';
+import { DevicesRepository } from '../../services/devices.repository';
 import { JwtService } from '../../services/jwt.service';
 import { NoderedTokenService } from '../../services/nodered-token.service';
 import { UserRepository } from '../../services/user.repository';
@@ -13,6 +14,7 @@ export class HomeController extends Controller {
         @Inject(UserRepository) private userRepo: Lazy<UserRepository>,
         @Inject(NoderedTokenService) private nrtokenService: Lazy<NoderedTokenService>,
         @Inject(JwtService) private jwtService: Lazy<JwtService>,
+        @Inject(JwtService) private devices: Lazy<DevicesRepository>,
     ) {
         super();
     }
@@ -23,8 +25,15 @@ export class HomeController extends Controller {
             return this.response.redirect('/login');
         }
 
+        const userDevices = this.devices.value.allDevices[this.request.token.uid];
+        const userDevicesHtml = JSON.stringify(userDevices, null, 2)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
         const token = await this.request.token.nodered;
-        return await this.renderTemplate('home', { token });
+        return await this.renderTemplate('home', { token, userDevicesJson: userDevicesHtml });
     }
 
     @Http.get('/privacy')
