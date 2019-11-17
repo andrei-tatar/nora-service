@@ -142,6 +142,7 @@ export class OauthController extends Controller {
   }
 
   private async generateRefreshToken(uid: string) {
+    // tslint:disable-next-line: deprecation
     const cipher = crypto.createCipher('aes-256-ctr', jwtSecret);
     const refresh = await this.userRepo.getRefreshToken(uid);
     let crypted = cipher.update(`${refresh}:${uid}`, 'utf8', 'base64');
@@ -150,6 +151,7 @@ export class OauthController extends Controller {
   }
 
   private async generateAccessTokenFromRefreshToken(refreshToken: string) {
+    // tslint:disable-next-line: deprecation
     const decipher = crypto.createDecipher('aes-256-ctr', jwtSecret);
     let dec = decipher.update(refreshToken, 'base64', 'utf8');
     dec += decipher.final('utf8');

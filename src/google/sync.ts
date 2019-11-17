@@ -13,7 +13,7 @@ export interface SyncPayload extends FulfillPayload {
 export interface SyncDevice {
     id: string;
     type: DeviceTypes;
-    traits: Trait[];
+    traits: Traits[];
     name: {
         defaultNames?: string[];
         name: string;
@@ -32,7 +32,7 @@ export interface SyncDevice {
 }
 
 
-export enum Trait {
+export enum Traits {
     Brightness = 'action.devices.traits.Brightness',
     ColorSetting = 'action.devices.traits.ColorSetting',
     OnOff = 'action.devices.traits.OnOff',
