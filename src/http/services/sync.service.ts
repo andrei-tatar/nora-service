@@ -1,7 +1,7 @@
 import { uniq } from 'lodash';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
-import { DeviceTypes, SyncDevice, SyncPayload, Trait } from '../../google';
+import { DeviceTypes, SyncDevice, SyncPayload, Traits } from '../../google';
 import { Devices, StateChanges } from '../../models';
 import { DevicesRepository } from '../../services/devices.repository';
 import { ReportStateService } from '../../services/report-state.service';
@@ -45,26 +45,26 @@ export class SyncService {
             switch (device.type) {
                 case 'switch':
                     sync.type = DeviceTypes.Switch;
-                    sync.traits.push(Trait.OnOff);
+                    sync.traits.push(Traits.OnOff);
                     break;
                 case 'outlet':
                     sync.type = DeviceTypes.Outlet;
-                    sync.traits.push(Trait.OnOff);
+                    sync.traits.push(Traits.OnOff);
                     break;
                 case 'light':
                     sync.type = DeviceTypes.Light;
-                    sync.traits.push(Trait.OnOff);
+                    sync.traits.push(Traits.OnOff);
                     if (device.brightnessControl) {
-                        sync.traits.push(Trait.Brightness);
+                        sync.traits.push(Traits.Brightness);
                     }
                     if (device.colorControl) {
-                        sync.traits.push(Trait.ColorSetting);
+                        sync.traits.push(Traits.ColorSetting);
                         sync.attributes = { colorModel: 'hsv' };
                     }
                     break;
                 case 'scene':
                     sync.type = DeviceTypes.Scene;
-                    sync.traits.push(Trait.Scene);
+                    sync.traits.push(Traits.Scene);
                     sync.willReportState = false;
                     sync.attributes = {
                         sceneReversible: device.sceneReversible,
@@ -72,7 +72,7 @@ export class SyncService {
                     break;
                 case 'thermostat':
                     sync.type = DeviceTypes.Thermostat;
-                    sync.traits.push(Trait.TemperatureSetting);
+                    sync.traits.push(Traits.TemperatureSetting);
                     sync.attributes = {
                         availableThermostatModes: uniq(device.availableModes).join(','),
                         thermostatTemperatureUnit: device.temperatureUnit,
@@ -83,15 +83,19 @@ export class SyncService {
                     break;
                 case 'speaker':
                     sync.type = DeviceTypes.Speaker;
-                    sync.traits.push(Trait.OnOff, Trait.Volume);
+                    sync.traits.push(Traits.OnOff, Traits.Volume);
                     break;
                 case 'blinds':
                     sync.type = DeviceTypes.Blinds;
-                    sync.traits.push(Trait.OpenClose);
+                    sync.traits.push(Traits.OpenClose);
                     break;
                 case 'garage':
                     sync.type = DeviceTypes.Garage;
-                    sync.traits.push(Trait.OpenClose);
+                    sync.traits.push(Traits.OpenClose);
+                    break;
+                case 'lock':
+                    sync.type = DeviceTypes.Lock;
+                    sync.traits.push(Traits.LockUnlock);
                     break;
             }
             syncDevices.push(sync);

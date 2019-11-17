@@ -3,7 +3,7 @@ import { ExecuteCommandTypes, ExecuteInput, ExecutePayload, ExecuteStatus } from
 import { Intent } from './intent';
 import { QueryDevice, QueryDevices, QueryInput, QueryPayload } from './query';
 import { FulfillPayload, FulfillResponse } from './response';
-import { DeviceTypes, SyncDevice, SyncInput, SyncPayload, Trait } from './sync';
+import { DeviceTypes, SyncDevice, SyncInput, SyncPayload, Traits } from './sync';
 
 export type Input = SyncInput | QueryInput | ExecuteInput | DisconnectInput;
 
@@ -13,5 +13,5 @@ export {
     QueryInput, QueryPayload, QueryDevices, QueryDevice,
     ExecuteInput, ExecutePayload, ExecuteCommandTypes, ExecuteStatus,
     FulfillPayload, FulfillResponse,
-    DeviceTypes, Trait
+    DeviceTypes, Traits
 };

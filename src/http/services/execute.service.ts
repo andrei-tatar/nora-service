@@ -32,7 +32,7 @@ export class ExecuteService {
       needPinDeviceIds: [],
       wrongPinDeviceIds: [],
     };
-
+    const updateOptions = { requestId, notifyClient: true };
     for (const command of input.payload.commands) {
       for (const execution of command.execution) {
         let deviceIds = command.devices.map(d => d.id);
@@ -52,20 +52,19 @@ export class ExecuteService {
           case ExecuteCommandTypes.ThermostatTemperatureSetRange:
           case ExecuteCommandTypes.ThermostatSetMode:
           case ExecuteCommandTypes.OpenClose:
-            this.devices.updateDevicesState(deviceIds, execution.params, {
-              requestId,
-              notifyClient: true,
-            });
+            this.devices.updateDevicesState(deviceIds, execution.params, updateOptions);
+            break;
+          case ExecuteCommandTypes.LockUnlock:
+            this.devices.updateDevicesState(deviceIds, {
+              isLocked: execution.params.lock,
+            }, updateOptions);
             break;
           case ExecuteCommandTypes.ActivateScene:
             const deactivate: boolean = typeof execution.params.deactivate === 'boolean' ? execution.params.deactivate : false;
             this.devices.activateScenes(deviceIds, deactivate);
             break;
           case ExecuteCommandTypes.SetVolume:
-            this.devices.updateDevicesState(deviceIds, { currentVolume: execution.params.volumeLevel }, {
-              requestId,
-              notifyClient: true,
-            });
+            this.devices.updateDevicesState(deviceIds, { currentVolume: execution.params.volumeLevel }, updateOptions);
             break;
           case ExecuteCommandTypes.TemperatureRelative:
             this.devices.updateDevicesState(deviceIds, device => {
@@ -77,10 +76,7 @@ export class ExecuteService {
                 };
               }
               return {};
-            }, {
-                requestId,
-                notifyClient: true,
-              });
+            }, updateOptions);
             break;
           case ExecuteCommandTypes.VolumeRelative:
             this.devices.updateDevicesState(deviceIds, device => {
@@ -91,10 +87,7 @@ export class ExecuteService {
                 return { currentVolume: newVolume };
               }
               return {};
-            }, {
-                requestId,
-                notifyClient: true,
-              });
+            }, updateOptions);
             break;
           default:
             console.warn(`unsupported execution command: ${execution.command}`);
