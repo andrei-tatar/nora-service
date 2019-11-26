@@ -47,12 +47,20 @@ export class ExecuteService {
         switch (execution.command) {
           case ExecuteCommandTypes.Brightness:
           case ExecuteCommandTypes.OnOff:
-          case ExecuteCommandTypes.ColorAbsolute:
           case ExecuteCommandTypes.ThermostatTemperatureSetpoint:
           case ExecuteCommandTypes.ThermostatTemperatureSetRange:
           case ExecuteCommandTypes.ThermostatSetMode:
           case ExecuteCommandTypes.OpenClose:
             this.devices.updateDevicesState(deviceIds, execution.params, updateOptions);
+            break;
+          case ExecuteCommandTypes.ColorAbsolute:
+            if (execution.params.color.spectrumHSV) {
+              this.devices.updateDevicesState(deviceIds, {
+                color: {
+                  spectrumHsv: execution.params.color.spectrumHSV,
+                }
+              }, updateOptions);
+            }
             break;
           case ExecuteCommandTypes.LockUnlock:
             this.devices.updateDevicesState(deviceIds, {
