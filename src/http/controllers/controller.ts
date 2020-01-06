@@ -5,6 +5,12 @@ import { join } from 'path';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
 
+function resolvDataFromId(data: any, id: string) {
+  return id.split('.').reduce((r, v) => {
+    return r[v] || `[NOTFOUND:${id}]`;
+  }, data);
+}
+
 export abstract class Controller {
     private static templateCache: _.Dictionary<Promise<string>> = {};
 
@@ -25,6 +31,6 @@ export abstract class Controller {
         }
 
         const template = await templatePromise;
-        return data ? template.replace(/\{\{(\w+)\}\}/mg, (_, id) => data[id] || '') : template;
+        return data ? template.replace(/\{\{(\w+(\.\w+)*)\}\}/mg, (_, id) => resolvDataFromId(data, id) || '') : template;
     }
 }

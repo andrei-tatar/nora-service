@@ -19,12 +19,12 @@
 
     <script>
         var config = {
-            apiKey: "AIzaSyD8tzIdGqx18PHSBqfOZ258FCch5Xk8y38",
-            authDomain: "node-red-home-automation-82192.firebaseapp.com",
-            databaseURL: "https://node-red-home-automation-82192.firebaseio.com",
-            projectId: "node-red-home-automation-82192",
-            storageBucket: "node-red-home-automation-82192.appspot.com",
-            messagingSenderId: "350438145283"
+          apiKey: "{{fireBase.apiKey}}",
+          authDomain: "{{fireBase.authDomain}}",
+          databaseURL: "{{fireBase.databaseURL}}",
+          projectId: "{{fireBase.projectId}}",
+          storageBucket: "{{fireBase.storageBucket}}",
+          messagingSenderId: "{{fireBase.messagingSenderId}}"
         };
         firebase.initializeApp(config);
 

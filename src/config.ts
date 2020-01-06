@@ -12,3 +12,10 @@ export const postgressConnectionString = isLocal ? local.postgressConnectionStri
 export const serviceAccountIssuer = isLocal ? local.serviceAccountIssuer : process.env.SERVICE_ACCOUNT_ISSUER;
 export const serviceAccountPrivateKey = isLocal ? local.serviceAccountPrivateKey : process.env.SERVICE_ACCOUNT_KEY;
 export const userAdminUid = isLocal ? local.userAdminUid : process.env.USER_ADMIN_UID;
+export const fireBase = isLocal ? local.fireBase : {
+  apiKey: process.env.FIREBASE_APIKEY || "AIzaSyD8tzIdGqx18PHSBqfOZ258FCch5Xk8y38",
+  authDomain: process.env.FIREBASE_AUTHDOMAIN || "node-red-home-automation-82192.firebaseapp.com",
+  databaseURL: process.env.FIREBASE_DATABASEURL || "https://node-red-home-automation-82192.firebaseio.com",
+  projectId: process.env.FIREBASE_PROJECID || "node-red-home-automation-82192",
+  storageBucket: process.env.FIREBASE_STORAGEBUCKET || "node-red-home-automation-82192.appspot.com"
+};

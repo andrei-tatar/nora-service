@@ -1,3 +1,4 @@
+import * as uuid from 'uuid';
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 import * as config from '../../config';
 import { FirebaseService } from '../../services/firebase.service';
@@ -30,7 +31,13 @@ export class LoginController extends Controller {
     async getLoginTemplate(
         @Param.queryString() query: string,
     ) {
-        return await this.renderTemplate('login', { query: query ? '?' + query : '' });
+        return await this.renderTemplate('login', {
+          query: query ? '?' + query : '',
+          fireBase: {
+            ...config.fireBase,
+            messagingSenderId: uuid.v4()
+          }
+        });
     }
 
     @Http.post()
