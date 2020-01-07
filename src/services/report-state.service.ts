@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
-import { serviceAccountIssuer, serviceAccountPrivateKey } from '../config';
+import { serviceAccount } from '../config';
 import { StateChanges } from '../models';
 import { delay } from '../util';
 import { JwtService } from './jwt.service';
@@ -71,13 +71,13 @@ export class ReportStateService {
     private async getToken() {
         const now = Math.round(new Date().getTime() / 1000);
         const jwt = {
-            'iss': serviceAccountIssuer,
+            'iss': serviceAccount.client_email,
             'scope': 'https://www.googleapis.com/auth/homegraph',
             'aud': 'https://accounts.google.com/o/oauth2/token',
             'iat': now,
             'exp': now + 3600,
         };
-        const token = await this.jwtService.sign(jwt, serviceAccountPrivateKey, { algorithm: 'RS256' });
+        const token = await this.jwtService.sign(jwt, serviceAccount.private_key, { algorithm: 'RS256' });
 
         const response = await fetch('https://accounts.google.com/o/oauth2/token', {
             method: 'post',

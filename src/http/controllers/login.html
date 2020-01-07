@@ -17,17 +17,9 @@
     <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-auth.js"></script>
     <script src="https://cdn.firebase.com/libs/firebaseui/3.4.1/firebaseui.js"></script>
 
-    <script>
-        var config = {
-          apiKey: "{{fireBase.apiKey}}",
-          authDomain: "{{fireBase.authDomain}}",
-          databaseURL: "{{fireBase.databaseURL}}",
-          projectId: "{{fireBase.projectId}}",
-          storageBucket: "{{fireBase.storageBucket}}",
-          messagingSenderId: "{{fireBase.messagingSenderId}}"
-        };
-        firebase.initializeApp(config);
+    <script src="{{fireBase.remoteInitUrl}}"></script>
 
+    <script>
         var uiConfig = {
             signInOptions: [
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,

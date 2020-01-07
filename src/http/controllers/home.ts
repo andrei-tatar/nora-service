@@ -57,7 +57,7 @@ export class HomeController extends Controller {
         };
 
         const tokenStr = await this.jwtService.value.sign(newToken);
-        this.response.cookie(config.jwtCookieName, tokenStr, { secure: !config.isLocal });
+        this.response.cookie(config.jwtCookieName, tokenStr, { secure: config.secureCookie });
         return this.response.redirect('/');
     }
 }

@@ -7,7 +7,10 @@ import { Inject } from '@andrei-tatar/ts-ioc';
 
 function resolvDataFromId(data: any, id: string) {
   return id.split('.').reduce((r, v) => {
-    return r[v] || `[NOTFOUND:${id}]`;
+    if (typeof r[v] === 'undefined') {
+        return `[NOTFOUND:${id}]`;
+    }
+    return r[v];
   }, data);
 }
 
