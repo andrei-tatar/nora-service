@@ -19,7 +19,7 @@ export class LoginController extends Controller {
         @Inject(FirebaseService)
         private firebase: Lazy<FirebaseService>,
         @Inject(NoderedTokenService)
-        private nrtokenService: Lazy<NoderedTokenService>
+        private nrtokenService: Lazy<NoderedTokenService>,
     ) {
         super();
     }
@@ -34,17 +34,19 @@ export class LoginController extends Controller {
         };
         return {
             contentType: 'text/javascript; charset=utf-8',
-            body: `(${templateInitJs.toString()})(firebase, ${JSON.stringify(config.fireBase, null, 2)});`
+            body: `(${templateInitJs.toString()})(firebase, ${JSON.stringify(config.fireBase, null, 2)});`,
         };
     }
 
     @Http.get()
-    async getLoginTemplate(@Param.queryString() query: string) {
+    async getLoginTemplate(
+        @Param.queryString() query: string,
+    ) {
         return await this.renderTemplate('login', {
             query: query ? '?' + query : '',
             fireBase: {
-                ...config.fireBase
-            }
+                ...config.fireBase,
+            },
         });
     }
 
@@ -52,7 +54,7 @@ export class LoginController extends Controller {
     async doLogin(
         @Param.fromBody('token') firebaseToken: string,
         @Param.fromQuery('redirect') redirect: string,
-        @Param.queryString() query: string
+        @Param.queryString() query: string,
     ) {
         await delay(500);
         try {
@@ -62,12 +64,12 @@ export class LoginController extends Controller {
                 uid: decoded.uid,
                 exp: Math.round((new Date().getTime() + 3600000) / 1000),
                 scope: 'app-user',
-                nodered: await this.nrtokenService.value.generateToken(decoded.uid)
+                nodered: await this.nrtokenService.value.generateToken(decoded.uid),
             };
 
             const tokenStr = await this.jwtService.value.sign(token);
             this.response.cookie(config.jwtCookieName, tokenStr, {
-                secure: config.secureCookie
+                secure: config.secureCookie,
             });
 
             if (typeof redirect === 'string') {
