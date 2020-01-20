@@ -1,6 +1,8 @@
 import { Request } from 'express';
 import * as url from 'url';
-import { Converter } from './param';
+// import { Converter } from './param';
+
+export type Converter = (input: any) => any;
 
 export class Param {
     private static readonly paramsResolversSymbol = Symbol('params');
@@ -104,4 +106,3 @@ export class Param {
     }
 }
 
-export type Converter = (input: any) => any;

@@ -4,13 +4,11 @@ import { JwtService } from '../../services/jwt.service';
 import { UserToken } from '../controllers/login';
 import { NotAuthorizedError } from './exception';
 
-/*
 declare module 'express' {
     export interface Request {
         token?: UserToken;
     }
 }
-*/
 
 export function authMiddleware() {
     return async (req: Request, _res: Response, next: NextFunction) => {
