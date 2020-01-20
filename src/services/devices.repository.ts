@@ -122,19 +122,21 @@ export class DevicesRepository {
             const device = groupDevices[id];
             if (!device) { continue; }
 
-            let hasChanged = false;
+	    // let hasChanged = false;
             const deviceChanges = typeof changes === 'function' ? changes(device) : changes;
+	    console.log('updateDevicesState:', id, device, deviceChanges);
             for (const key of Object.keys(deviceChanges)) {
-                const oldValue = device.state[key];
+	    	// const oldValue = device.state[key];
                 const newValue = deviceChanges[key];
                 device.state[key] = newValue;
-                hasChanged = !isEqual(oldValue, newValue);
+		// hasChanged = !isEqual(oldValue, newValue);
             }
-
+            /*
             if (hasChanged) {
+	    */
                 stateChanges[id] = device.state;
                 anyChange = true;
-            }
+    	    //}
 
             notiyClientChanges[id] = device.state;
         }

@@ -12,10 +12,9 @@ export const port = isLocal ? local.port : process.env.PORT;
 export const oauthClientId = isLocal ? local.oauthClientId : process.env.OAUTH_ID;
 export const oauthClientSecret = isLocal ? local.oauthClientSecret : process.env.OAUTH_SECRET;
 export const jwtCookieName = isLocal ? local.jwtCookieName : process.env.JWT_COOKIE;
-export const projectId = isLocal ? local.projectId : process.env.PROJECT_ID;
 export const googleProjectApiKey = isLocal ? local.googleProjectApiKey : process.env.PROJECT_API_KEY;
 export const serviceAccount = {
-    project_id: projectId,
+    project_id: isLocal ? local.projectId : process.env.PROJECT_ID,
     client_email: isLocal ? local.serviceAccountClientEmail : process.env.SERVICE_ACCOUNT_CLIENT_EMAIL,
     private_key: isLocal ? local.serviceAccountPrivateKey : process.env.SERVICE_ACCOUNT_PRIVATE_KEY
 };
@@ -23,7 +22,10 @@ const serviceAccountJsonFileName = isLocal ? local.serviceAccountJson : process.
 if (typeof serviceAccountJsonFileName === 'string') {
     Object.assign(serviceAccount, JSON.parse(fs.readFileSync(serviceAccountJsonFileName).toString()));
 }
+export const oauthProjectId = isLocal ? local.projectId : process.env.OAUTH_PROJECT_ID || serviceAccount.project_id;
 export const jwtSecret = isLocal ? local.jwtSecret : process.env.JWT_SECRET || serviceAccount.private_key;
+
+export const noraServiceUrl = isLocal ? local.noraServiceUrl : process.env.NORA_SERVICE_URL || 'node-red';
 
 let ssl = true;
 if (isLocal && typeof local.postgresSsl === 'boolean') {

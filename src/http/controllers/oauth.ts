@@ -1,5 +1,5 @@
 import * as crypto from 'crypto';
-import { jwtSecret, oauthClientId, oauthClientSecret, projectId } from '../../config';
+import { jwtSecret, oauthClientId, oauthClientSecret, oauthProjectId } from '../../config';
 import { JwtService } from '../../services/jwt.service';
 import { UserRepository } from '../../services/user.repository';
 import { Http } from '../decorators/http';
@@ -48,7 +48,7 @@ export class OauthController extends Controller {
       throw new BadRequestError('invalid client_id');
     }
 
-    if (!redirectUri || !redirectUri.startsWith(`https://oauth-redirect.googleusercontent.com/r/${projectId}`)) {
+    if (!redirectUri || !redirectUri.startsWith(`https://oauth-redirect.googleusercontent.com/r/${oauthProjectId}`)) {
       throw new BadRequestError('invalid redirect_uri');
     }
 

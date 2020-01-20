@@ -2,6 +2,7 @@ import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
+import * as morgan from 'morgan';
 
 import { authMiddleware } from './middlewares/auth';
 
@@ -13,6 +14,7 @@ import { exceptionMiddleware } from './middlewares/exception';
 
 const app = express();
 app.use(cors());
+app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
