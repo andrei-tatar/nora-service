@@ -21,6 +21,7 @@ export enum ExecuteCommandTypes {
     VolumeRelative = 'action.devices.commands.volumeRelative',
     OpenClose = 'action.devices.commands.OpenClose',
     LockUnlock = 'action.devices.commands.LockUnlock',
+    getCameraStream = 'action.devices.commands.GetCameraStream'
 }
 
 export interface ExecuteCommand {

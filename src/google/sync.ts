@@ -41,6 +41,7 @@ export enum Traits {
     TemperatureSetting = 'action.devices.traits.TemperatureSetting',
     Volume = 'action.devices.traits.Volume',
     OpenClose = 'action.devices.traits.OpenClose',
+    CameraStream = 'action.devices.traits.CameraStream',
 }
 
 export enum DeviceTypes {
@@ -53,4 +54,5 @@ export enum DeviceTypes {
     Blinds = 'action.devices.types.BLINDS',
     Garage = 'action.devices.types.GARAGE',
     Lock = 'action.devices.types.LOCK',
+    Camera = 'action.devices.types.CAMERA',
 }

@@ -50,6 +50,7 @@ export class ExecuteService {
           case ExecuteCommandTypes.ThermostatTemperatureSetpoint:
           case ExecuteCommandTypes.ThermostatTemperatureSetRange:
           case ExecuteCommandTypes.ThermostatSetMode:
+          case ExecuteCommandTypes.getCameraStream:
           case ExecuteCommandTypes.OpenClose:
             this.devices.updateDevicesState(deviceIds, execution.params, updateOptions);
             break;
