@@ -44,9 +44,8 @@ export class LoginController extends Controller {
     ) {
         return await this.renderTemplate('login', {
             query: query ? '?' + query : '',
-            fireBase: {
-                ...config.fireBase,
-            },
+            appTitle: config.appTitle,
+	    fireBase: config.fireBase
         });
     }
 

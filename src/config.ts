@@ -8,6 +8,7 @@ export const secureCookie = !(typeof secureCookieStr === 'string'
     ? secureCookieStr.startsWith('F') || secureCookieStr.startsWith('f') || parseInt(secureCookieStr, 10) === 0
     : isLocal);
 
+export const appTitle = (isLocal ? local.appTitle : process.env.APPTITLE) || 'NORA';
 export const port = isLocal ? local.port : process.env.PORT;
 export const oauthClientId = isLocal ? local.oauthClientId : process.env.OAUTH_ID;
 export const oauthClientSecret = isLocal ? local.oauthClientSecret : process.env.OAUTH_SECRET;
@@ -58,3 +59,11 @@ export const fireBase = isLocal
           messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID || '350438145283',
           remoteInitUrl: process.env.FIREBASE_REMOTEINITURL || '/login/init.js'
       };
+
+fireBase.jsBaseUrl = fireBase.jsBaseUrl || process.env.FIREBASE_JSBASEURL || 'https://www.gstatic.com/firebasejs/5.6.0';
+
+const tmpPleaForDonation = isLocal ? local.pleaForDonation : process.env.PLEA_FOR_DONATION;
+export const pleaForDonation = typeof tmpPleaForDonation === 'string' ? tmpPleaForDonation :
+	`<h1 class="h6 mt-3 font-weight-normal">
+	  Do you like ${appTitle} and find it useful? Consider donating
+          <a href="https://paypal.me/andreitatar">Paypal Me</a></h1>`;

@@ -36,12 +36,28 @@ export class HomeController extends Controller {
             : 'No devices';
         const token = await this.request.token.nodered;
 	console.log('RenderTop:', userDevices, userDevicesHtml, token);
-        return await this.renderTemplate('home', { token, userDevicesJson: userDevicesHtml });
+	return await this.renderTemplate('home', {
+		token, userDevicesJson: userDevicesHtml,
+		appTitle: config.appTitle,
+		fireBase: config.fireBase,
+		pleaForDonation: config.pleaForDonation
+	});
     }
 
     @Http.get('/privacy')
     async getPrivacyPolicy() {
-        return await this.renderTemplate('home-privacy');
+	return await this.renderTemplate('home-privacy', {
+	  appTitle: config.appTitle,
+	  fireBase: config.fireBase
+	});
+    }
+
+    @Http.get('/terms')
+    async getTermsOfService() {
+	return await this.renderTemplate('home-tos', {
+	  appTitle: config.appTitle,
+	  fireBase: config.fireBase
+	});
     }
 
     @Http.get('/revoke')

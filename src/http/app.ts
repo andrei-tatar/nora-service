@@ -15,6 +15,9 @@ import { exceptionMiddleware } from './middlewares/exception';
 const app = express();
 app.use(cors());
 app.use(morgan('combined'));
+
+app.use('/module/firebaseui', express.static('./node_modules/firebaseui'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -23,6 +26,7 @@ app.use(authMiddleware());
 app.use(Http.controllers(controllers, {
   resolveController: (req, type) => req.container.resolve(type),
 }));
+
 app.use(exceptionMiddleware());
 app.use(destroyContainerMiddleware());
 
