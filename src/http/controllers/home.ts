@@ -35,7 +35,7 @@ export class HomeController extends Controller {
                 .replace(/'/g, '&#039;')
             : 'No devices';
         const token = await this.request.token.nodered;
-	console.log('RenderTop:', userDevices, userDevicesHtml, token);
+	// console.log('RenderTop:', userDevices, userDevicesHtml, token);
 	return await this.renderTemplate('home', {
 		token, userDevicesJson: userDevicesHtml,
 		appTitle: config.appTitle,
