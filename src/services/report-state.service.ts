@@ -66,7 +66,7 @@ export class ReportStateService {
             },
         };
 	const url = `https://homegraph.googleapis.com/v1/devices:reportStateAndNotification`;
-	// console.log(`fetch: ${url}:`', JSON.stringify(fetchOptions, null, 2));
+	console.log(`fetch: ${url}:`, JSON.stringify(fetchOptions, null, 2));
         const response = await fetch(url, fetchOptions);
 	return { url, fetchOptions, response };
     }
