@@ -9,7 +9,31 @@ export const secureCookie = !(typeof secureCookieStr === 'string'
     : isLocal);
 
 export const appTitle = (isLocal ? local.appTitle : process.env.APPTITLE) || 'NORA';
-export const port = isLocal ? local.port : process.env.PORT;
+
+function fileOrEnv(key: string, keyFile: string) {
+	if (process.env[key]) {
+		return process.env[key];
+	}
+	if (typeof process.env[keyFile] === 'string') {
+		return fs.readFileSync(process.env[keyFile]);
+	}
+	return;
+}
+
+let tls = {
+	key: fileOrEnv('TLS_KEY', 'TLS_KEY_FILE'),
+	cert: fileOrEnv('TLS_CERT', 'TLS_CERT_FILE')
+};
+if (!(tls.key && tls.cert)) {
+	tls = undefined;
+}
+export const serviceSockets = isLocal ? local.serviceSockets : [
+	{
+		port: isLocal ? local.port : process.env.PORT,
+		address: isLocal ? local.address : process.env.ADDRESS,
+		tls
+	}
+];
 export const oauthClientId = isLocal ? local.oauthClientId : process.env.OAUTH_ID;
 export const oauthClientSecret = isLocal ? local.oauthClientSecret : process.env.OAUTH_SECRET;
 export const jwtCookieName = isLocal ? local.jwtCookieName : process.env.JWT_COOKIE;
