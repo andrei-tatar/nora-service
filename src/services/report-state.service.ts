@@ -26,11 +26,13 @@ export class ReportStateService {
     async reportState(stateChanges: StateChanges, requestId?: string, tries = 3) {
         if (!await this.userRepo.isUserLinked(this.uid)) { return null; }
         while (tries-- > 0) {
-            const response = await this.reportStateInternal(stateChanges, requestId);
+	    const { url, fetchOptions, response } = await this.reportStateInternal(stateChanges, requestId);
             if (response.ok) { return; }
             if (response.status !== 404) {
-                throw new Error(`while reportState (${this.uid}). status: ${response.status} - ${await response.text()}`);
-            }
+	    throw new Error(`while reportState (${this.uid}).
+	        req: ${url} - ${JSON.stringify(fetchOptions, null, 2)}
+		status: ${response.status} - ${await response.text()}`);
+	    }
             await delay(20000);
         }
     }
@@ -54,9 +56,7 @@ export class ReportStateService {
                 }
             }
         };
-	console.log('fetch: https://homegraph.googleapis.com/v1/devices:reportStateAndNotification:', JSON.stringify(body));
-
-        const response = await fetch(`https://homegraph.googleapis.com/v1/devices:reportStateAndNotification`, {
+	const fetchOptions = {
             method: 'post',
             body: JSON.stringify(body),
             headers: {
@@ -64,9 +64,11 @@ export class ReportStateService {
                 'authorization': `Bearer ${token.token}`,
                 'X-GFE-SSL': 'yes',
             },
-        });
-
-        return response;
+        };
+	const url = `https://homegraph.googleapis.com/v1/devices:reportStateAndNotification`;
+	// console.log(`fetch: ${url}:`', JSON.stringify(fetchOptions, null, 2));
+        const response = await fetch(url, fetchOptions);
+	return { url, fetchOptions, response };
     }
 
     private async getToken() {
