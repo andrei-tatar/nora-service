@@ -9,7 +9,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet"
-	  href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous" />
 
@@ -33,7 +33,7 @@
                 // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
                 // firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
             ],
-	    // tosUrl and privacyPolicyUrl accept either url string or a callback
+	        // tosUrl and privacyPolicyUrl accept either url string or a callback
             // function.
             // Terms of service url/callback.
             tosUrl: function() {
@@ -62,8 +62,8 @@
     <div class="container card mt-5 pb-3 pt-4" style="max-width: 450px">
         <form id="loginForm" method="post" action="/login{{query}}">
             <h1 class="h3 mb-3 font-weight-normal">
-		    <strong>NO</strong>de-<strong>R</strong>ed home <strong>A</strong>utomation
-	    </h1>
+                <strong>NO</strong>de-<strong>R</strong>ed home <strong>A</strong>utomation
+	        </h1>
             <h1 class="h4 mb-3 font-weight-normal">Select sign in method</h1>
             <input type="hidden" id="inputToken" name="token" />
             <div id="firebaseui-auth-container"></div>

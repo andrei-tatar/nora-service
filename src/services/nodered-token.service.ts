@@ -29,7 +29,7 @@ export class NoderedTokenService {
     async validateToken(token: string) {
         const decoded = await this.jwtService.verify<NoderedToken>(token);
         if (decoded.scope !== noraServiceUrl) {
-	throw new Error(`invalid scope:${decoded.scope}`);
+            throw new Error(`invalid scope:${decoded.scope}`);
         }
         const version = await this.userRepo.getNodeRedTokenVersion(decoded.uid);
         if (version !== decoded.version) {
