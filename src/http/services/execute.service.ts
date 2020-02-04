@@ -58,7 +58,7 @@ export class ExecuteService {
                 }
               }
               return execution.params;
-            });
+            }, updateOptions);
             break;
           case ExecuteCommandTypes.OnOff:
           case ExecuteCommandTypes.ThermostatTemperatureSetpoint:
