@@ -1,4 +1,4 @@
-import { uniq } from 'lodash';
+import { isEqual, uniq } from 'lodash';
 
 import { Injectable } from '@andrei-tatar/ts-ioc';
 import {
@@ -69,10 +69,24 @@ export class ExecuteService {
             break;
           case ExecuteCommandTypes.ColorAbsolute:
             if (execution.params.color.spectrumHSV) {
-              this.devices.updateDevicesState(deviceIds, {
-                color: {
-                  spectrumHsv: execution.params.color.spectrumHSV,
+              this.devices.updateDevicesState(deviceIds, device => {
+                const update = {
+                  color: {
+                    spectrumHsv: execution.params.color.spectrumHSV,
+                  },
+                };
+                if (device.type === 'light') {
+                  if (device.brightnessControl &&
+                    device.colorControl &&
+                    device.turnOnWhenBrightnessChanges &&
+                    !isEqual(device.state.color, update.color)) {
+                    return {
+                      on: true,
+                      ...update,
+                    };
+                  }
                 }
+                return update;
               }, updateOptions);
             }
             break;
