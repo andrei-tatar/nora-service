@@ -13,6 +13,7 @@ export type LightDevice = BaseDevice & {
 export type LightDeviceWithBrightness = BaseDevice & {
     type: 'light';
     brightnessControl: true;
+    turnOnWhenBrightnessChanges?: boolean;
     colorControl?: false;
     state: BrightnessState & OnOffState;
 };
@@ -20,6 +21,7 @@ export type LightDeviceWithBrightness = BaseDevice & {
 export type LightDeviceWithColor = BaseDevice & {
     type: 'light';
     brightnessControl: true;
+    turnOnWhenBrightnessChanges?: boolean;
     colorControl: true;
     state: ColorState & BrightnessState & OnOffState;
 };

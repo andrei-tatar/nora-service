@@ -46,6 +46,20 @@ export class ExecuteService {
 
         switch (execution.command) {
           case ExecuteCommandTypes.Brightness:
+            this.devices.updateDevicesState(deviceIds, device => {
+              if (device.type === 'light') {
+                if (device.brightnessControl &&
+                  device.turnOnWhenBrightnessChanges &&
+                  device.state.brightness !== execution.params.brightness) {
+                  return {
+                    on: true,
+                    brightness: execution.params.brightness,
+                  };
+                }
+              }
+              return execution.params;
+            });
+            break;
           case ExecuteCommandTypes.OnOff:
           case ExecuteCommandTypes.ThermostatTemperatureSetpoint:
           case ExecuteCommandTypes.ThermostatTemperatureSetRange:
