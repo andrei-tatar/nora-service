@@ -1,14 +1,14 @@
 import * as admin from 'firebase-admin';
-import { projectId, serviceAccountIssuer, serviceAccountPrivateKey } from '../config';
+import { serviceAccount } from '../config';
 
 export class FirebaseService {
 
     constructor() {
         admin.initializeApp({
             credential: admin.credential.cert({
-                projectId: projectId,
-                clientEmail: serviceAccountIssuer,
-                privateKey: serviceAccountPrivateKey,
+                projectId: serviceAccount.project_id,
+                clientEmail: serviceAccount.client_email,
+                privateKey: serviceAccount.private_key,
             }),
         });
     }

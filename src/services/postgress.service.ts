@@ -1,16 +1,10 @@
 import { Pool } from 'pg';
-import { postgressConnectionString } from '../config';
+import { postgres } from '../config';
 
 export class PostgressService {
     readonly HOUR = 3600000;
 
-    private pool = new Pool({
-        connectionString: postgressConnectionString,
-        ssl: true,
-        max: 5,
-        idleTimeoutMillis: 4 * this.HOUR,
-        connectionTimeoutMillis: 2000,
-    });
+    private pool = new Pool(postgres);
 
     async query<T = any>(query: string, ...values: any[]): Promise<T[]> {
         const result = await this.pool.query(query, values);

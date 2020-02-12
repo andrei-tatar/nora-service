@@ -15,9 +15,11 @@ export class RequestSyncService {
     }
 
     async requestSync() {
+        console.log(`RequestSyncService:`, this.uid, await this.userRepo.isUserLinked(this.uid));
         if (!await this.userRepo.isUserLinked(this.uid)) { return; }
 
         while (true) {
+            console.log(`fetch: https://homegraph.googleapis.com/v1/devices:requestSync?key=${googleProjectApiKey}`, this.uid);
             const response = await fetch(`https://homegraph.googleapis.com/v1/devices:requestSync?key=${googleProjectApiKey}`, {
                 method: 'post',
                 body: JSON.stringify({ agentUserId: this.uid }),

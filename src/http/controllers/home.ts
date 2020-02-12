@@ -1,3 +1,5 @@
+import * as functions from 'firebase-functions';
+
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 import * as config from '../../config';
 import { DevicesRepository } from '../../services/devices.repository';
@@ -35,12 +37,39 @@ export class HomeController extends Controller {
                 .replace(/'/g, '&#039;')
             : 'No devices';
         const token = await this.request.token.nodered;
-        return await this.renderTemplate('home', { token, userDevicesJson: userDevicesHtml });
+	// console.log('RenderTop:', userDevices, userDevicesHtml, token);
+	return await this.renderTemplate('home', {
+		token, userDevicesJson: userDevicesHtml,
+		appTitle: config.appTitle,
+		fireBase: config.fireBase,
+		pleaForDonation: config.pleaForDonation
+	});
     }
 
     @Http.get('/privacy')
     async getPrivacyPolicy() {
-        return await this.renderTemplate('home-privacy');
+	return await this.renderTemplate('home-privacy', {
+	  appTitle: config.appTitle,
+	  fireBase: config.fireBase
+	});
+    }
+
+    @Http.get('/env')
+    async getEnv() {
+      return JSON.stringify({
+        env: process.env,
+        fireBase: {
+          config: functions.config()
+        }
+      }, null, 2);
+    }
+
+    @Http.get('/terms')
+    async getTermsOfService() {
+	return await this.renderTemplate('home-tos', {
+	  appTitle: config.appTitle,
+	  fireBase: config.fireBase
+	});
     }
 
     @Http.get('/revoke')
@@ -57,7 +86,7 @@ export class HomeController extends Controller {
         };
 
         const tokenStr = await this.jwtService.value.sign(newToken);
-        this.response.cookie(config.jwtCookieName, tokenStr, { secure: !config.isLocal });
+        this.response.cookie(config.jwtCookieName, tokenStr, { secure: config.secureCookie });
         return this.response.redirect('/');
     }
 }

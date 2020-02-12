@@ -1,5 +1,5 @@
 import { Server } from 'http';
-import * as createSocketServer from 'socket.io';
+import createSocketServer from 'socket.io';
 
 import { Container } from '@andrei-tatar/ts-ioc';
 import { ConnectionHandler } from './connectionhandler';
@@ -19,6 +19,9 @@ export function initWebSocketListener(server: Server, container: Container) {
     io.use(oneConnectionPerUserMiddleware());
     io.on('connect', socket => {
         try {
+            io.on('*', (event, data) => {
+              console.log('RecvMsg:', event, data);
+            });
             const instance = socket.container.resolve(ConnectionHandler);
             registerBindedEvents(instance, socket);
         } catch (err) {

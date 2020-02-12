@@ -1,10 +1,11 @@
 import { Injectable } from '@andrei-tatar/ts-ioc';
+import { noraServiceUrl } from '../config';
 import { JwtService } from './jwt.service';
 import { UserRepository } from './user.repository';
 
 interface NoderedToken {
     uid: string;
-    scope: 'node-red';
+    scope: string;
     version: number;
 }
 
@@ -19,7 +20,7 @@ export class NoderedTokenService {
     async generateToken(uid: string) {
         const token: NoderedToken = {
             uid: uid,
-            scope: 'node-red',
+            scope: noraServiceUrl,
             version: await this.userRepo.getNodeRedTokenVersion(uid),
         };
         return this.jwtService.sign(token);
@@ -27,8 +28,8 @@ export class NoderedTokenService {
 
     async validateToken(token: string) {
         const decoded = await this.jwtService.verify<NoderedToken>(token);
-        if (decoded.scope !== 'node-red') {
-            throw new Error('invalid scope');
+        if (decoded.scope !== noraServiceUrl) {
+            throw new Error(`invalid scope:${decoded.scope}`);
         }
         const version = await this.userRepo.getNodeRedTokenVersion(decoded.uid);
         if (version !== decoded.version) {

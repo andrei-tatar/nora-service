@@ -2,32 +2,27 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <title>NORA Login</title>
+    <title>{{appTitle}} - Login</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous" />
 
-    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.4.1/firebaseui.css" />
+    <link type="text/css" rel="stylesheet" href="/module/firebaseui/dist/firebaseui.css" />
 
-    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-auth.js"></script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/3.4.1/firebaseui.js"></script>
+    <script src="{{fireBase.jsBaseUrl}}/firebase-app.js"></script>
+    <script src="{{fireBase.jsBaseUrl}}/firebase-auth.js"></script>
+
+    <script src="{{fireBase.remoteInitUrl}}"></script>
+
+    <script src="/module/firebaseui/dist/firebaseui.js"></script>
 
     <script>
-        var config = {
-            apiKey: "AIzaSyD8tzIdGqx18PHSBqfOZ258FCch5Xk8y38",
-            authDomain: "node-red-home-automation-82192.firebaseapp.com",
-            databaseURL: "https://node-red-home-automation-82192.firebaseio.com",
-            projectId: "node-red-home-automation-82192",
-            storageBucket: "node-red-home-automation-82192.appspot.com",
-            messagingSenderId: "350438145283"
-        };
-        firebase.initializeApp(config);
-
         var uiConfig = {
             signInOptions: [
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -38,6 +33,16 @@
                 // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
                 // firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
             ],
+	        // tosUrl and privacyPolicyUrl accept either url string or a callback
+            // function.
+            // Terms of service url/callback.
+            tosUrl: function() {
+              window.location.assign('/terms');
+            },
+            // Privacy policy url/callback.
+            privacyPolicyUrl: function() {
+              window.location.assign('/privacy');
+            },
             callbacks: {
                 signInSuccessWithAuthResult: function (authResult, redirectUrl) {
                     authResult.user.getIdToken().then(function (token) {
@@ -48,7 +53,6 @@
                 },
             }
         };
-
         var ui = new firebaseui.auth.AuthUI(firebase.auth());
         ui.start('#firebaseui-auth-container', uiConfig);
     </script>
@@ -57,11 +61,12 @@
 <body class="text-center p-3" style="background-color:#f5f5f5">
     <div class="container card mt-5 pb-3 pt-4" style="max-width: 450px">
         <form id="loginForm" method="post" action="/login{{query}}">
-            <h1 class="h3 mb-3 font-weight-normal"><strong>NO</strong>de-<strong>R</strong>ed home <strong>A</strong>utomation</h1>
+            <h1 class="h3 mb-3 font-weight-normal">
+                <strong>NO</strong>de-<strong>R</strong>ed home <strong>A</strong>utomation
+	        </h1>
             <h1 class="h4 mb-3 font-weight-normal">Select sign in method</h1>
-            <input type="hidden" id="inputToken" name="token">
-            <div id="firebaseui-auth-container">
-            </div>
+            <input type="hidden" id="inputToken" name="token" />
+            <div id="firebaseui-auth-container"></div>
         </form>
     </div>
 </body>

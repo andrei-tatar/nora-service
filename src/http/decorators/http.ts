@@ -92,6 +92,8 @@ export class Http {
             if (result !== void 0) {
                 if (typeof result === 'string') {
                     response.contentType('html').send(result);
+                } else if (result.body && result.contentType) {
+                    response.contentType(result.contentType).send(result.body);
                 } else {
                     response.json(result);
                 }

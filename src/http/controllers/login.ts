@@ -11,7 +11,6 @@ import { Controller } from './controller';
 
 @Http.controller('/login')
 export class LoginController extends Controller {
-
     constructor(
         @Inject(UserRepository)
         private userRepository: Lazy<UserRepository>,
@@ -21,16 +20,33 @@ export class LoginController extends Controller {
         private firebase: Lazy<FirebaseService>,
         @Inject(NoderedTokenService)
         private nrtokenService: Lazy<NoderedTokenService>,
-
     ) {
         super();
+    }
+
+    @Http.get('/init.js')
+    async getInitJs() {
+        const templateInitJs = function(firebase: any, fbConfig: any) {
+            if (typeof firebase === 'undefined') {
+                throw new Error('hosting/init-error: Firebase SDK not detected. You must include it before /__/firebase/init.js');
+            }
+            firebase.initializeApp(fbConfig);
+        };
+        return {
+            contentType: 'text/javascript; charset=utf-8',
+            body: `(${templateInitJs.toString()})(firebase, ${JSON.stringify(config.fireBase, null, 2)});`,
+        };
     }
 
     @Http.get()
     async getLoginTemplate(
         @Param.queryString() query: string,
     ) {
-        return await this.renderTemplate('login', { query: query ? '?' + query : '' });
+        return await this.renderTemplate('login', {
+            query: query ? '?' + query : '',
+            appTitle: config.appTitle,
+	    fireBase: config.fireBase
+        });
     }
 
     @Http.post()
@@ -51,7 +67,9 @@ export class LoginController extends Controller {
             };
 
             const tokenStr = await this.jwtService.value.sign(token);
-            this.response.cookie(config.jwtCookieName, tokenStr, { secure: !config.isLocal });
+            this.response.cookie(config.jwtCookieName, tokenStr, {
+                secure: config.secureCookie,
+            });
 
             if (typeof redirect === 'string') {
                 const redirectUri = Buffer.from(redirect, 'base64').toString();

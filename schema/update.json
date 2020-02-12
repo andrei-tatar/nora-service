@@ -12,6 +12,9 @@
                 "$ref": "#/definitions/Partial<OnOffState>"
             },
             {
+                "$ref": "#/definitions/Partial<LockUnlockState>"
+            },
+            {
                 "$ref": "#/definitions/Partial<Thermostat>"
             },
             {
@@ -22,6 +25,9 @@
             },
             {
                 "$ref": "#/definitions/Partial<VolumeState&OnOffState>"
+            },
+            {
+                "$ref": "#/definitions/Partial<Partial<Thermostat>>"
             }
         ]
     },
@@ -95,6 +101,21 @@
             },
             "type": "object"
         },
+        "Partial<LockUnlockState>": {
+            "additionalProperties": false,
+            "properties": {
+                "isJammed": {
+                    "type": "boolean"
+                },
+                "isLocked": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
         "Partial<OnOffState>": {
             "additionalProperties": false,
             "properties": {
@@ -116,6 +137,47 @@
                 "openPercent": {
                     "maximum": 100,
                     "minimum": 0,
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<Partial<Thermostat>>": {
+            "additionalProperties": false,
+            "properties": {
+                "online": {
+                    "type": "boolean"
+                },
+                "thermostatHumidityAmbient": {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "thermostatMode": {
+                    "enum": [
+                        "auto",
+                        "cool",
+                        "dry",
+                        "eco",
+                        "fan-only",
+                        "heat",
+                        "heatcool",
+                        "off",
+                        "on",
+                        "purifier"
+                    ],
+                    "type": "string"
+                },
+                "thermostatTemperatureAmbient": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpoint": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointHigh": {
+                    "type": "number"
+                },
+                "thermostatTemperatureSetpointLow": {
                     "type": "number"
                 }
             },
