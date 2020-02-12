@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 
+import * as functions from 'firebase-functions';
 import * as http from 'http';
 import * as https from 'https';
 import * as process from 'process';
@@ -7,7 +8,6 @@ import { serviceSockets } from './config';
 import { container } from './container';
 import { app } from './http/app';
 import { initWebSocketListener } from './socket';
-import * as functions from 'firebase-functions';
 
 const  fireBaseExports: any = {};
 export = fireBaseExports;
@@ -20,7 +20,7 @@ if (typeof process.env.FIREBASE_CONFIG === 'undefined') {
       port: srv.port,
       address: srv.address
     }, () =>
-      console.log(`listening ${srv.tls ? 'https' : 'http'} on ${srv.address ? '['+srv.address+'] ': ''}${srv.port}`)
+      console.log(`listening ${srv.tls ? 'https' : 'http'} on ${srv.address ? '[' + srv.address + '] ' : ''}${srv.port}`)
     );
   });
 } else {

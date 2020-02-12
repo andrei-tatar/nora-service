@@ -26,7 +26,7 @@ export class LoginController extends Controller {
 
     @Http.get('/init.js')
     async getInitJs() {
-        const templateInitJs = function(firebase: any, fbConfig: any) {
+        const templateInitJs = function (firebase: any, fbConfig: any) {
             if (typeof firebase === 'undefined') {
                 throw new Error('hosting/init-error: Firebase SDK not detected. You must include it before /__/firebase/init.js');
             }
@@ -45,7 +45,7 @@ export class LoginController extends Controller {
         return await this.renderTemplate('login', {
             query: query ? '?' + query : '',
             appTitle: config.appTitle,
-	    fireBase: config.fireBase
+            fireBase: config.fireBase
         });
     }
 
