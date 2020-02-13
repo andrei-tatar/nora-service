@@ -1,5 +1,3 @@
-import * as functions from 'firebase-functions';
-
 import { Inject, Lazy } from '@andrei-tatar/ts-ioc';
 import * as config from '../../config';
 import { DevicesRepository } from '../../services/devices.repository';
@@ -52,16 +50,6 @@ export class HomeController extends Controller {
             appTitle: config.appTitle,
             fireBase: config.fireBase
         });
-    }
-
-    @Http.get('/env')
-    async getEnv() {
-        return JSON.stringify({
-            env: process.env,
-            fireBase: {
-                config: functions.config()
-            }
-        }, null, 2);
     }
 
     @Http.get('/terms')
