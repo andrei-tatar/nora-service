@@ -8,6 +8,7 @@ export function childContainerMiddleware(container: Container) {
         socket.container.register({ token: 'uid', useFactory: () => socket.uid });
         socket.container.register({ token: 'notify', useValue: socket.handshake.query.notify === 'true' });
         socket.container.register({ token: 'group', useValue: socket.handshake.query.group || '' });
+        socket.container.register({ token: 'local', useValue: socket.handshake.query.local === 'true' });
         socket.once('disconnect', () => {
             try {
                 socket.container.destroy();

@@ -14,39 +14,27 @@ export class ConnectionHandler implements Destroyable {
 
     constructor(
         @Inject('socket') socket: Socket,
-        @Inject('group') private group: string,
         @Inject('notify') notify: boolean,
+        @Inject('group') private group: string,
+        @Inject('local') private localExecution: boolean,
         private userDevices: DevicesRepository,
         private validation: ValidationService,
     ) {
         userDevices.stateChanges$.pipe(
-            filter(c => c.hasChanges || notify),
+            filter(c => c.group === this.group && (c.hasChanges || notify)),
             map(c => c.stateChanges),
             takeUntil(this.destroy$)
         ).subscribe(changes => {
-            const update: UpdateDevices = { ...changes };
-            const groupDevices = this.userDevices.getDeviceIdsInGroup(this.group);
-            for (const deviceId of Object.keys(update)) {
-                if (groupDevices.indexOf(deviceId) < 0) {
-                    delete update[deviceId];
-                }
-            }
-
-            if (Object.keys(update).length) {
-                socket.emit('update', update);
-            }
+            socket.emit('update', changes);
         });
 
         userDevices.commands$.pipe(
+            filter(c => c.group === this.group),
             takeUntil(this.destroy$)
         ).subscribe(command => {
             switch (command.type) {
                 case 'activate-scene':
-                    const groupDevices = this.userDevices.getDeviceIdsInGroup(this.group);
-                    const deviceIds = command.deviceIds.filter(id => groupDevices.indexOf(id) >= 0);
-                    if (deviceIds.length) {
-                        socket.emit(`activate-scene`, deviceIds, command.deactivate);
-                    }
+                    socket.emit(`activate-scene`, command.deviceIds, command.deactivate);
                     break;
             }
         });
@@ -66,7 +54,7 @@ export class ConnectionHandler implements Destroyable {
         try {
             this.validation.validate('sync', devices);
             this.devicesSynced$.next(true);
-            await this.userDevices.sync(devices, this.group);
+            await this.userDevices.sync(devices, this.group, this.localExecution);
         } catch (err) {
             this.devicesSynced$.next(false);
             throw err;
@@ -79,9 +67,7 @@ export class ConnectionHandler implements Destroyable {
         this.validation.validate('update', update);
         const ids = Object.keys(update);
         for (const id of ids) {
-            this.userDevices.updateDevicesState([id], update[id], {
-                group: this.group,
-            });
+            this.userDevices.updateDevicesState(this.group, [id], update[id]);
         }
     }
 

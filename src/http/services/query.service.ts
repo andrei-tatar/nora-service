@@ -2,6 +2,7 @@ import { Injectable } from '@andrei-tatar/ts-ioc';
 import { QueryDevice, QueryDevices, QueryInput, QueryPayload } from '../../google';
 import { Device } from '../../models';
 import { DevicesRepository } from '../../services/devices.repository';
+import { decompose } from './util';
 
 @Injectable()
 export class QueryService {
@@ -13,21 +14,22 @@ export class QueryService {
 
     query(input: QueryInput): QueryPayload {
         const queryIds = input.payload.devices.map(d => d.id);
-        const userDevices = this.devices.getDevicesById(queryIds);
-        const devices: QueryDevices = {};
-        for (const [index, device] of userDevices.entries()) {
-            const id = queryIds[index];
+        const userDevices = this.devices.userDevices;
+        const queryDevices: QueryDevices = {};
+        for (const googleId of queryIds) {
+            const { group, id } = decompose(googleId);
+            const device = userDevices[group]?.devices?.[id];
             if (!device) {
-                devices[id] = { online: false };
+                queryDevices[googleId] = { online: false };
             } else {
                 const state: QueryDevice = {
                     online: device.state.online,
                 };
                 this.updateQueryState(state, device);
-                devices[id] = state;
+                queryDevices[googleId] = state;
             }
         }
-        return { devices };
+        return { devices: queryDevices };
     }
 
     private updateQueryState(state: QueryDevice, device: Device) {

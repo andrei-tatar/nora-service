@@ -6,11 +6,14 @@ import { Inject } from '@andrei-tatar/ts-ioc';
 import { AllStates, Device, Devices, StateChanges } from '../models';
 import { ReportStateService } from './report-state.service';
 import { RequestSyncService } from './request-sync.service';
+import { delay } from '../util';
+import { compose } from '../http/services/util';
 
 export class DevicesRepository {
     private static commands = new Subject<Command>();
     private static statechanges = new Subject<{
         uid: string;
+        group: string;
         stateChanges: StateChanges;
         hasChanges: boolean;
     }>();
@@ -20,9 +23,7 @@ export class DevicesRepository {
         };
     } = {};
     private static devicesPerUser: {
-        [uid: string]: {
-            [group: string]: Devices;
-        };
+        [uid: string]: UserDevices;
     } = {};
 
     get isUserOnline() {
@@ -37,6 +38,10 @@ export class DevicesRepository {
         return DevicesRepository.devicesPerUser;
     }
 
+    get userDevices() {
+        return DevicesRepository.devicesPerUser[this.uid] ?? {};
+    }
+
     readonly stateChanges$ = DevicesRepository.statechanges.pipe(filter(c => c.uid === this.uid));
     readonly commands$ = DevicesRepository.commands.pipe(filter(c => c.uid === this.uid), map(c => c as Omit<Command, 'uid'>));
 
@@ -48,42 +53,33 @@ export class DevicesRepository {
     ) {
     }
 
-    async sync(devices: Devices, group: string) {
-        const oldDevices = this.getDevicesInternal(group);
+    async sync(newDevices: Devices, group: string, localExecution: boolean) {
+        const oldDevices = DevicesRepository.devicesPerUser[this.uid]?.[group]?.devices ?? {};
 
-        const existingDevices = this.getSyncCompareDevices(oldDevices);
-        const newDevices = this.getSyncCompareDevices(devices);
+        const oldSync = this.getSyncCompareDevices(oldDevices);
+        const newSync = this.getSyncCompareDevices(newDevices);
 
         let userGroups = DevicesRepository.devicesPerUser[this.uid];
         if (!userGroups) {
             DevicesRepository.devicesPerUser[this.uid] = userGroups = {};
         }
 
-        userGroups[group] = cloneDeep(devices);
-        if (!isEqual(existingDevices, newDevices)) {
+        userGroups[group] = {
+            devices: cloneDeep(newDevices),
+            localExecution,
+        };
+
+        if (!isEqual(oldSync, newSync)) {
             try {
                 await this.requestSyncService.requestSync();
             } catch (err) {
                 console.warn(`requestSync failed, trying again in 10 sec`, err);
-                await new Promise(r => setTimeout(r, 10000));
+                await delay(10000);
                 this.requestSyncService.requestSync().catch(err => {
                     console.warn(`requestSync try 2 failed`, err);
                 });
             }
         }
-    }
-
-    getAllDevices() {
-        return this.getDevicesInternal();
-    }
-
-    getDevicesById(ids: string[]) {
-        const userDevices = this.getAllDevices();
-        return ids.map(id => userDevices[id]);
-    }
-
-    getDevice(id: string) {
-        return this.getAllDevices()[id];
     }
 
     userOnline(group: string, version: string = 'unknown') {
@@ -99,23 +95,24 @@ export class DevicesRepository {
                 if (Object.keys(onlineGroups).length === 0) {
                     delete DevicesRepository.onlineUsers[this.uid];
                 }
-                const deviceIds = Object.keys(this.getDevicesInternal(group));
-                this.updateDevicesState(deviceIds, { online: false }, { group });
+                const deviceIds = Object.keys(this.userDevices[group]?.devices ?? {});
+                this.updateDevicesState(group, deviceIds, { online: false });
             };
         });
     }
 
-    activateScenes(deviceIds: string[], deactivate: boolean) {
-        DevicesRepository.commands.next({ type: 'activate-scene', uid: this.uid, deviceIds, deactivate });
+    activateScenes(group: string, deviceIds: string[], deactivate: boolean) {
+        DevicesRepository.commands.next({ type: 'activate-scene', uid: this.uid, deviceIds, group, deactivate });
     }
 
     updateDevicesState(
+        group: string,
         ids: string[],
         changes: Partial<AllStates> | ((device: Device) => Partial<AllStates>),
-        { notifyClient = false, requestId, group }: { notifyClient?: boolean, requestId?: string, group?: string } = {}
+        { notifyClient = false, requestId }: { notifyClient?: boolean, requestId?: string } = {}
     ) {
-        const groupDevices = this.getDevicesInternal(group);
-        const stateChanges: StateChanges = {};
+        const groupDevices = DevicesRepository.devicesPerUser[this.uid]?.[group]?.devices ?? {};
+        const googleStateChanges: StateChanges = {};
         const notiyClientChanges: StateChanges = {};
         let anyChange = false;
         for (const id of ids) {
@@ -123,18 +120,18 @@ export class DevicesRepository {
             if (!device) { continue; }
 
             const deviceChanges = typeof changes === 'function' ? changes(device) : changes;
-            console.log('updateDevicesState:', id, device, deviceChanges);
+            console.log('updateDevicesState:', group, id, device, deviceChanges);
             for (const key of Object.keys(deviceChanges)) {
                 const newValue = deviceChanges[key];
                 device.state[key] = newValue;
             }
-            stateChanges[id] = device.state;
             anyChange = true;
+            googleStateChanges[compose(id, group)] = device.state;
             notiyClientChanges[id] = device.state;
         }
 
         if (anyChange) {
-            this.reportStateService.reportState(stateChanges, requestId).catch(err => {
+            this.reportStateService.reportState(googleStateChanges, requestId).catch(err => {
                 console.warn('err while reporting state', err);
             });
         }
@@ -142,31 +139,10 @@ export class DevicesRepository {
         if (notifyClient) {
             DevicesRepository.statechanges.next({
                 uid: this.uid,
+                group,
                 stateChanges: notiyClientChanges,
                 hasChanges: anyChange,
             });
-        }
-    }
-
-    getDeviceIdsInGroup(group: string) {
-        const userDevices = DevicesRepository.devicesPerUser[this.uid] || {};
-        const groupDevices = userDevices[group] || [];
-        return Object.keys(groupDevices);
-    }
-
-    private getDevicesInternal(group?: string) {
-        const userDevices = DevicesRepository.devicesPerUser[this.uid] || {};
-        if (group) {
-            return userDevices[group] || {};
-        } else {
-            const allDevices: Devices = {};
-            for (const groupName of Object.keys(userDevices)) {
-                const groupDevices = userDevices[groupName];
-                for (const deviceId of Object.keys(groupDevices)) {
-                    allDevices[deviceId] = groupDevices[deviceId];
-                }
-            }
-            return allDevices;
         }
     }
 
@@ -184,6 +160,14 @@ export type Command = ActivateSceneCommand;
 export interface ActivateSceneCommand {
     type: 'activate-scene';
     uid: string;
+    group: string;
     deviceIds: string[];
     deactivate: boolean;
 }
+
+export interface UserDevices {
+    [group: string]: {
+        devices: Devices;
+        localExecution: boolean;
+    };
+};

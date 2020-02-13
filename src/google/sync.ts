@@ -27,6 +27,7 @@ export interface SyncDevice {
         hwVersion: string;
         swVersion: string;
     };
+    otherDeviceIds?: string[];
     attributes?: any;
     customData?: any;
 }
