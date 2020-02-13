@@ -33,7 +33,7 @@ export class SyncService {
 
         for (const [group, groupDevices] of Object.entries(devices)) {
             for (const [id, device] of Object.entries(groupDevices.devices)) {
-                const googleId = compose(id, group);
+                const googleId = compose({ id, group });
                 const sync: SyncDevice = {
                     id: googleId,
                     type: null,
@@ -116,8 +116,9 @@ export class SyncService {
     private async reportState(requestId: string, userDevices: UserDevices) {
         const stateChanges: StateChanges = {};
         for (const [group, groupDevices] of Object.entries(userDevices)) {
-            for (const [deviceId, device] of Object.entries(groupDevices.devices)) {
-                stateChanges[compose(deviceId, group)] = device.state;
+            for (const [id, device] of Object.entries(groupDevices.devices)) {
+                const googleId = compose({ id, group });
+                stateChanges[googleId] = device.state;
             }
         }
 

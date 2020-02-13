@@ -120,13 +120,12 @@ export class DevicesRepository {
             if (!device) { continue; }
 
             const deviceChanges = typeof changes === 'function' ? changes(device) : changes;
-            console.log('updateDevicesState:', group, id, device, deviceChanges);
             for (const key of Object.keys(deviceChanges)) {
                 const newValue = deviceChanges[key];
                 device.state[key] = newValue;
             }
             anyChange = true;
-            googleStateChanges[compose(id, group)] = device.state;
+            googleStateChanges[compose({ id, group })] = device.state;
             notiyClientChanges[id] = device.state;
         }
 

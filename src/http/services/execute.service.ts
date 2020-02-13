@@ -138,8 +138,8 @@ export class ExecuteService {
               console.warn(`unsupported execution command: ${execution.command}`);
               break;
           }
-          
-          state.successDeviceIds.push(...deviceIds.map(id => compose(id, group)));
+
+          state.successDeviceIds.push(...deviceIds.map(id => compose({ id, group })));
         }
 
         break;
@@ -182,8 +182,8 @@ export class ExecuteService {
   private filterDevices(execution: CommandExecution, group: string, deviceIds: string[], state: ResponseState) {
     return deviceIds.filter(deviceId => {
       const device = this.devices.userDevices[group]?.devices?.[deviceId];
-      const googleId = compose(deviceId, group);
-      if (!device || !device.state.online) {
+      const googleId = compose({ id: deviceId, group });
+      if (device?.state?.online !== true) {
         state.offlineDeviceIds.push(googleId);
         return false;
       }

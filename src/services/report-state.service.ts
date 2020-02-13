@@ -68,7 +68,6 @@ export class ReportStateService {
             },
         };
         const url = `https://homegraph.googleapis.com/v1/devices:reportStateAndNotification`;
-        console.log(`fetch: ${url}:`, JSON.stringify(fetchOptions, null, 2));
         const response = await fetch(url, fetchOptions);
         return { url, fetchOptions, response };
     }
@@ -83,8 +82,6 @@ export class ReportStateService {
             exp: now + 3600,
         };
         const token = await this.jwtService.sign(jwt, serviceAccount.private_key, { algorithm: 'RS256' });
-
-        console.log('fetch: https://accounts.google.com/o/oauth2/token');
         const response = await fetch('https://accounts.google.com/o/oauth2/token', {
             method: 'post',
             body: `grant_type=${encodeURIComponent('urn:ietf:params:oauth:grant-type:jwt-bearer')}&assertion=${encodeURIComponent(token)}`,

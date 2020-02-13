@@ -2,10 +2,10 @@ import { Socket } from 'socket.io';
 
 const bindEventsKey = Symbol('bind:events');
 
-export function BindEvent(event?: string, { once = false }: { once?: boolean } = {}) {
+export function BindEvent(event?: string) {
     return (target, key: string) => {
         const bindedEvents = getBindedEvents(target);
-        bindedEvents.push({ event: event || key, method: key, once });
+        bindedEvents.push({ event: event || key, method: key });
         Reflect.defineMetadata(bindEventsKey, bindedEvents, target);
     };
 }
@@ -15,7 +15,6 @@ function getBindedEvents(target) {
         (Reflect.getMetadata(bindEventsKey, target) as {
             method: string;
             event: string;
-            once: boolean;
         }[]) || []
     );
 }
@@ -34,16 +33,8 @@ export function registerBindedEvents(target, socket: Socket) {
                 console.warn(`unhandled error in binded event ${event.event} (uid: ${socket.uid})`, err, JSON.stringify(args));
             }
         };
-        if (event.once) {
-            socket.once(event.event, (...args: any[]) => {
-                // console.log('ONCE:', event.event, ...args);
-                handler(...args);
-            });
-        } else {
-            socket.on(event.event, (...args: any[]) => {
-                // console.log('ON:', event.event, ...args);
-                handler(...args);
-            });
-        }
+        socket.on(event.event, (...args: any[]) => {
+            handler(...args);
+        });
     }
 }

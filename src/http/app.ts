@@ -11,10 +11,13 @@ import controllers from './controllers';
 import { Http } from './decorators/http';
 import { containerMiddleware, destroyContainerMiddleware } from './middlewares/container';
 import { exceptionMiddleware } from './middlewares/exception';
+import { isLocal } from '../config';
 
 const app = express();
 app.use(cors());
-app.use(morgan('combined'));
+if (isLocal) {
+  app.use(morgan('combined'));
+}
 
 app.use('/module/firebaseui', express.static('./node_modules/firebaseui'));
 

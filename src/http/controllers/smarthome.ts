@@ -27,7 +27,6 @@ export class SmartHomeController extends Controller {
         @Param.fromBody('inputs') inputs: Input[],
         @Param.fromBody('requestId') requestId: string,
     ) {
-        console.log('FulFill:', JSON.stringify(this.request.body));
         let payload: FulfillPayload;
         for (const input of inputs) {
             console.info(`executing ${input.intent} for ${this.request.token.uid}`);

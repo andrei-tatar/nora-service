@@ -19,9 +19,6 @@ export function initWebSocketListener(server: Server, container: Container) {
     io.use(oneConnectionPerUserMiddleware());
     io.on('connect', socket => {
         try {
-            io.on('*', (event, data) => {
-              console.log('RecvMsg:', event, data);
-            });
             const instance = socket.container.resolve(ConnectionHandler);
             registerBindedEvents(instance, socket);
         } catch (err) {
