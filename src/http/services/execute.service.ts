@@ -7,7 +7,7 @@ import {
 } from '../../google';
 import { CommandExecution, ExecutePayloadCommand } from '../../google/execute';
 import { DevicesRepository } from '../../services/devices.repository';
-import { decompose, compose } from './util';
+import { compose, decompose } from './util';
 
 interface ResponseState {
   offlineDeviceIds: string[];

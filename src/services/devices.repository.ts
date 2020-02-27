@@ -3,11 +3,11 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
+import { compose } from '../http/services/util';
 import { AllStates, Device, Devices, StateChanges } from '../models';
+import { delay } from '../util';
 import { ReportStateService } from './report-state.service';
 import { RequestSyncService } from './request-sync.service';
-import { delay } from '../util';
-import { compose } from '../http/services/util';
 
 export class DevicesRepository {
     private static commands = new Subject<Command>();
@@ -169,4 +169,4 @@ export interface UserDevices {
         devices: Devices;
         localExecution: boolean;
     };
-};
+}
