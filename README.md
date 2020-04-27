@@ -43,7 +43,6 @@ To deploy, you can either use the heroku cli or connect your github account. (do
 	- Client secret: this is your Client Secret from Google API Console ('OAuth 2.0 Client IDs' click your webclient credentials)
 	- Authorization URL - https://XXXXXXXXX.herokuapp.com/oauth
 	- Token URL - https://XXXXXXXXX.herokuapp.com/oauth/token
-	- Scopes (I added google-home-authcode / app-user because i saw those 2 somewhere in the code but I don't think they are needed) ?? @Andrei please confirm/deny
 - Back in Overview click Add Actions
 - Fulfillment URL - https://XXXXXXXXX.herokuapp.com/smarthome/fulfill
 
