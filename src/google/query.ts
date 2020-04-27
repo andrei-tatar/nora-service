@@ -1,4 +1,4 @@
-import { AllStates } from '../models';
+import { AllStates } from '../nora-common/models';
 import { Intent } from './intent';
 import { FulfillPayload } from './response';
 

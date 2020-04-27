@@ -1,4 +1,4 @@
-import { Device, StateChanges } from '../models';
+import { Device, StateChanges } from '../nora-common/models';
 
 export interface SyncDevices {
     [id: string]: Device;

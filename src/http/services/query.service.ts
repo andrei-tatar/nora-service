@@ -1,6 +1,6 @@
 import { Injectable } from '@andrei-tatar/ts-ioc';
 import { QueryDevice, QueryDevices, QueryInput, QueryPayload } from '../../google';
-import { Device } from '../../models';
+import { Device } from '../../nora-common/models';
 import { DevicesRepository } from '../../services/devices.repository';
 import { decompose } from './util';
 

@@ -2,7 +2,7 @@ import { uniq } from 'lodash';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
 import { DeviceTypes, SyncDevice, SyncPayload, Traits } from '../../google';
-import { StateChanges } from '../../models';
+import { StateChanges } from '../../nora-common/models';
 import { DevicesRepository, UserDevices } from '../../services/devices.repository';
 import { ReportStateService } from '../../services/report-state.service';
 import { delay } from '../../util';

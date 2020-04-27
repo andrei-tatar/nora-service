@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
 import { serviceAccount } from '../config';
-import { StateChanges } from '../models';
+import { StateChanges } from '../nora-common/models';
 import { delay } from '../util';
 import { JwtService } from './jwt.service';
 import { UserRepository } from './user.repository';
