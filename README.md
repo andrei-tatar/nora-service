@@ -57,11 +57,11 @@ In Heroku go to Settings - Config Vars and add
     JWT_SECRET = downloaded service account json from firebase - private_key
     OAUTH_ID = api console - credentials - oauth 2.0 client ids - web client - Client ID
     OAUTH_SECRET = api console - credentials - oauth 2.0 client ids - web client - Client secret
-    OAUTH_PROJECT_ID = firebase - settings -general - your apps - project id
-    PROJECT_API_KEY = api console - credentials - api keys - key
     PROJECT_ID = firebase - settings -general - your apps - project id
     SERVICE_ACCOUNT_ISSUER =  downloaded service account json from firebase - client_email
-    SERVICE_ACCOUNT_KEY =  downloaded service account json from firebase - private_key
+    SERVICE_ACCOUNT_KEY =  downloaded service account json from firebase - private_key (format it as multiline)
+    FIREBASE_APIKEY = firebase - settings -general - your apps
+    FIREBASE_AUTHDOMAIN = firebase - settings -general - your apps
 
 ## USER.REPOSITORY.TS
 Modify [src/services/user.repository.ts](https://github.com/andrei-tatar/nora-service/blob/master/src/services/user.repository.ts)
