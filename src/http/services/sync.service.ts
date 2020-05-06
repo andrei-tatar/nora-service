@@ -47,7 +47,11 @@ export class SyncService {
                 };
 
                 if (groupDevices.localExecution) {
-                    sync.otherDeviceIds = [googleId];
+                    sync.otherDeviceIds = [{
+                        // TODO: is agentId this needed? sample doesn't send it
+                        // https://github.com/actions-on-google/smart-home-local/blob/master/functions/index.ts#L58
+                        deviceId: googleId,
+                    }];
                 }
 
                 switch (device.type) {

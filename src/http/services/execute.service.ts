@@ -1,11 +1,9 @@
-import { isEqual, uniq } from 'lodash';
+import { uniq } from 'lodash';
 
 import { Injectable } from '@andrei-tatar/ts-ioc';
-import {
-  ExecuteCommandTypes, ExecuteInput, ExecutePayload,
-  ExecuteStatus
-} from '../../google';
+import { ExecuteInput, ExecutePayload, ExecuteStatus } from '../../google';
 import { CommandExecution, ExecutePayloadCommand } from '../../google/execute';
+import { ExecuteCommandTypes, getStateChanges } from '../../nora-common/google/execute';
 import { DevicesRepository } from '../../services/devices.repository';
 import { compose, decompose } from './util';
 
@@ -54,88 +52,14 @@ export class ExecuteService {
           deviceIds = this.filterDevices(execution, group, deviceIds, state);
 
           switch (execution.command) {
-            case ExecuteCommandTypes.Brightness:
-              this.devices.updateDevicesState(group, deviceIds, device => {
-                if (device.type === 'light') {
-                  if (device.brightnessControl &&
-                    device.turnOnWhenBrightnessChanges &&
-                    device.state.brightness !== execution.params.brightness) {
-                    return {
-                      on: true,
-                      brightness: execution.params.brightness,
-                    };
-                  }
-                }
-                return execution.params;
-              }, updateOptions);
-              break;
-            case ExecuteCommandTypes.OnOff:
-            case ExecuteCommandTypes.ThermostatTemperatureSetpoint:
-            case ExecuteCommandTypes.ThermostatTemperatureSetRange:
-            case ExecuteCommandTypes.ThermostatSetMode:
-            case ExecuteCommandTypes.OpenClose:
-              this.devices.updateDevicesState(group, deviceIds, execution.params, updateOptions);
-              break;
-            case ExecuteCommandTypes.ColorAbsolute:
-              if (execution.params.color.spectrumHSV) {
-                this.devices.updateDevicesState(group, deviceIds, device => {
-                  const update = {
-                    color: {
-                      spectrumHsv: execution.params.color.spectrumHSV,
-                    },
-                  };
-                  if (device.type === 'light') {
-                    if (device.brightnessControl &&
-                      device.colorControl &&
-                      device.turnOnWhenBrightnessChanges &&
-                      !isEqual(device.state.color, update.color)) {
-                      return {
-                        on: true,
-                        ...update,
-                      };
-                    }
-                  }
-                  return update;
-                }, updateOptions);
-              }
-              break;
-            case ExecuteCommandTypes.LockUnlock:
-              this.devices.updateDevicesState(group, deviceIds, {
-                isLocked: execution.params.lock,
-              }, updateOptions);
-              break;
             case ExecuteCommandTypes.ActivateScene:
               const deactivate: boolean = typeof execution.params.deactivate === 'boolean' ? execution.params.deactivate : false;
               this.devices.activateScenes(group, deviceIds, deactivate);
               break;
-            case ExecuteCommandTypes.SetVolume:
-              this.devices.updateDevicesState(group, deviceIds, { currentVolume: execution.params.volumeLevel }, updateOptions);
-              break;
-            case ExecuteCommandTypes.TemperatureRelative:
-              this.devices.updateDevicesState(group, deviceIds, device => {
-                if (device.type === 'thermostat') {
-                  const { thermostatTemperatureRelativeDegree, thermostatTemperatureRelativeWeight } = execution.params;
-                  const change = thermostatTemperatureRelativeDegree || (thermostatTemperatureRelativeWeight / 2);
-                  return {
-                    thermostatTemperatureSetpoint: device.state + change,
-                  };
-                }
-                return {};
-              }, updateOptions);
-              break;
-            case ExecuteCommandTypes.VolumeRelative:
-              this.devices.updateDevicesState(group, deviceIds, device => {
-                if (device.type === 'speaker' && 'currentVolume' in device.state) {
-                  const relativeStepSize = device.relativeVolumeStep || execution.params.volumeRelativeLevel;
-                  const delta = execution.params.relativeSteps * relativeStepSize;
-                  const newVolume = Math.min(100, Math.max(0, device.state.currentVolume + delta));
-                  return { currentVolume: newVolume };
-                }
-                return {};
-              }, updateOptions);
-              break;
+
             default:
-              console.warn(`unsupported execution command: ${execution.command}`);
+              this.devices.updateDevicesState(group, deviceIds,
+                device => getStateChanges(execution.command, execution.params, device), updateOptions);
               break;
           }
 

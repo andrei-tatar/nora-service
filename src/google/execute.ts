@@ -1,3 +1,4 @@
+import { ExecuteCommandTypes } from '../nora-common/google/execute';
 import { Intent } from './intent';
 import { FulfillPayload } from './response';
 
@@ -6,21 +7,6 @@ export interface ExecuteInput {
     payload: {
         commands: ExecuteCommand[];
     };
-}
-
-export enum ExecuteCommandTypes {
-    OnOff = 'action.devices.commands.OnOff',
-    Brightness = 'action.devices.commands.BrightnessAbsolute',
-    ActivateScene = 'action.devices.commands.ActivateScene',
-    ColorAbsolute = 'action.devices.commands.ColorAbsolute',
-    ThermostatTemperatureSetpoint = 'action.devices.commands.ThermostatTemperatureSetpoint',
-    ThermostatTemperatureSetRange = 'action.devices.commands.ThermostatTemperatureSetRange',
-    ThermostatSetMode = 'action.devices.commands.ThermostatSetMode',
-    TemperatureRelative = 'action.devices.commands.TemperatureRelative',
-    SetVolume = 'action.devices.commands.setVolume',
-    VolumeRelative = 'action.devices.commands.volumeRelative',
-    OpenClose = 'action.devices.commands.OpenClose',
-    LockUnlock = 'action.devices.commands.LockUnlock',
 }
 
 export interface ExecuteCommand {
