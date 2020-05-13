@@ -4,8 +4,8 @@ import { Injectable } from '@andrei-tatar/ts-ioc';
 import { ExecuteInput, ExecutePayload, ExecuteStatus } from '../../google';
 import { CommandExecution, ExecutePayloadCommand } from '../../google/execute';
 import { ExecuteCommandTypes, getStateChanges } from '../../nora-common/google/execute';
+import { compose, decompose } from '../../nora-common/util';
 import { DevicesRepository } from '../../services/devices.repository';
-import { compose, decompose } from './util';
 
 interface ResponseState {
   offlineDeviceIds: string[];

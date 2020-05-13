@@ -3,10 +3,10 @@ import { uniq } from 'lodash';
 import { Inject } from '@andrei-tatar/ts-ioc';
 import { DeviceTypes, SyncDevice, SyncPayload, Traits } from '../../google';
 import { StateChanges } from '../../nora-common/models';
+import { compose } from '../../nora-common/util';
 import { DevicesRepository, UserDevices } from '../../services/devices.repository';
 import { ReportStateService } from '../../services/report-state.service';
 import { delay } from '../../util';
-import { compose } from './util';
 
 export class SyncService {
 

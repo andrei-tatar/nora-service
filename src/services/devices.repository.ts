@@ -3,8 +3,8 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
-import { compose } from '../http/services/util';
 import { AllStates, Device, Devices, StateChanges } from '../nora-common/models';
+import { compose } from '../nora-common/util';
 import { delay } from '../util';
 import { ReportStateService } from './report-state.service';
 import { RequestSyncService } from './request-sync.service';
