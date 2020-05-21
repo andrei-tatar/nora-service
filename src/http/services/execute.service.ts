@@ -117,7 +117,7 @@ export class ExecuteService {
                   const { thermostatTemperatureRelativeDegree, thermostatTemperatureRelativeWeight } = execution.params;
                   const change = thermostatTemperatureRelativeDegree || (thermostatTemperatureRelativeWeight / 2);
                   return {
-                    thermostatTemperatureSetpoint: device.state + change,
+                    thermostatTemperatureSetpoint: device.state.thermostatTemperatureSetpoint + change,
                   };
                 }
                 return {};
