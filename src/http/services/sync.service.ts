@@ -2,11 +2,11 @@ import { uniq } from 'lodash';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
 import { DeviceTypes, SyncDevice, SyncPayload, Traits } from '../../google';
-import { StateChanges } from '../../models';
+import { StateChanges } from '../../nora-common/models';
+import { compose } from '../../nora-common/util';
 import { DevicesRepository, UserDevices } from '../../services/devices.repository';
 import { ReportStateService } from '../../services/report-state.service';
 import { delay } from '../../util';
-import { compose } from './util';
 
 export class SyncService {
 
@@ -47,7 +47,11 @@ export class SyncService {
                 };
 
                 if (groupDevices.localExecution) {
-                    sync.otherDeviceIds = [googleId];
+                    sync.otherDeviceIds = [{
+                        // TODO: is agentId this needed? sample doesn't send it
+                        // https://github.com/actions-on-google/smart-home-local/blob/master/functions/index.ts#L58
+                        deviceId: googleId,
+                    }];
                 }
 
                 switch (device.type) {

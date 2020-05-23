@@ -3,8 +3,8 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { Inject } from '@andrei-tatar/ts-ioc';
-import { compose } from '../http/services/util';
-import { AllStates, Device, Devices, StateChanges } from '../models';
+import { AllStates, Device, Devices, StateChanges } from '../nora-common/models';
+import { compose } from '../nora-common/util';
 import { delay } from '../util';
 import { ReportStateService } from './report-state.service';
 import { RequestSyncService } from './request-sync.service';
@@ -120,13 +120,15 @@ export class DevicesRepository {
             if (!device) { continue; }
 
             const deviceChanges = typeof changes === 'function' ? changes(device) : changes;
-            for (const key of Object.keys(deviceChanges)) {
-                const newValue = deviceChanges[key];
-                device.state[key] = newValue;
+            if (deviceChanges) {
+                for (const key of Object.keys(deviceChanges)) {
+                    const newValue = deviceChanges[key];
+                    device.state[key] = newValue;
+                }
+                anyChange = true;
+                googleStateChanges[compose({ id, group })] = device.state;
+                notiyClientChanges[id] = device.state;
             }
-            anyChange = true;
-            googleStateChanges[compose({ id, group })] = device.state;
-            notiyClientChanges[id] = device.state;
         }
 
         if (anyChange) {

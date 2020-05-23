@@ -20,6 +20,7 @@ export interface SyncDevice {
         nicknames?: string[];
     };
     willReportState: boolean;
+    notificationSupportedByAgent?: boolean;
     roomHint?: string;
     deviceInfo?: {
         manufacturer: string;
@@ -27,7 +28,10 @@ export interface SyncDevice {
         hwVersion: string;
         swVersion: string;
     };
-    otherDeviceIds?: string[];
+    otherDeviceIds?: {
+        agentId?: string;
+        deviceId: string;
+    }[];
     attributes?: any;
     customData?: any;
 }

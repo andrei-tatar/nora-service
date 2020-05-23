@@ -50,27 +50,28 @@ export class UserRepository {
     }
 }
 
-// (async function () {
-//     const service = new PostgressService();
-//     // await service.query(`
-//     //     CREATE TABLE IF NOT EXISTS appuser (
-//     //         uid VARCHAR(30) CONSTRAINT pk PRIMARY KEY,
-//     //         linked boolean DEFAULT false
-//     //     )`
-//     // );
+(async function () {
+    const service = new PostgressService();
+    await service.query(`
+        CREATE TABLE IF NOT EXISTS appuser (
+            uid VARCHAR(30) CONSTRAINT pk PRIMARY KEY,
+            linked boolean DEFAULT false
+        )`
+    );
 
-//     // await service.query('ALTER TABLE appuser ADD COLUMN noderedversion integer DEFAULT 1');
-//     const repo = new UserRepository(service);
-//     // await repo.incrementNoderedTokenVersion('ARcEql2ileYghxMOstan2bOsSEj1');
-//     // const users = await service.query('select * from appuser');
+    // await service.query('ALTER TABLE appuser ADD COLUMN noderedversion integer DEFAULT 1');
+    await service.query('ALTER TABLE appuser ADD COLUMN refreshToken integer DEFAULT 1');
+    // const repo = new UserRepository(service);
+    // await repo.incrementNoderedTokenVersion('ARcEql2ileYghxMOstan2bOsSEj1');
+    // const users = await service.query('select * from appuser');
 
-//     console.log(await repo.getUser('ARcEql2ileYghxMOstan2bOsSEj1'));
+    // console.log(await repo.getUser('ARcEql2ileYghxMOstan2bOsSEj1'));
 
-// })().catch(err => {
-//     console.error(err);
-// }).then(() => {
-//     console.log('done');
-// });
+})().catch(err => {
+    console.error(err);
+}).then(() => {
+    console.log('done');
+});
 
 export interface User {
     readonly uid: string;
