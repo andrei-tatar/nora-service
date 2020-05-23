@@ -56,6 +56,9 @@ export class ExecuteService {
               const deactivate: boolean = typeof execution.params.deactivate === 'boolean' ? execution.params.deactivate : false;
               this.devices.activateScenes(group, deviceIds, deactivate);
               break;
+            case ExecuteCommandTypes.Dock:
+              this.devices.sendToDock(group, deviceIds, updateOptions);
+              break;
 
             default:
               this.devices.updateDevicesState(group, deviceIds,

@@ -71,6 +71,10 @@ export class QueryService {
                 state.isLocked = device.state.isLocked;
                 state.isJammed = device.state.isJammed;
                 break;
+			case 'vacuum':
+                state.isRunning = device.state.isRunning;
+                state.isPaused = device.state.isPaused;
+                break;
         }
     }
 }

@@ -12,7 +12,9 @@
     "schema-update": "typescript-json-schema src/socket/types.ts UpdateDevices --noExtraProps --required --strictNullChecks > schema/update.json",
     "schema": "npm run schema-sync && npm run schema-update",
     "copyhtml": "cp src/http/controllers/*.html build/http/controllers/",
+    "copyhtmlWindows": "copyfiles -fV src\\http\\controllers\\*.html build\\http\\controllers\\ ",
     "heroku-postbuild": "npm run build && npm run copyhtml && npm run schema",
+    "windows-postbuild": "npm run build && npm run copyhtmlWindows && npm run schema",
     "start": "node build/index.js",
     "lint": "tslint --project .",
     "test": "echo \"Error: no test specified\" && exit 1"

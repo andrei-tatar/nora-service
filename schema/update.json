@@ -28,6 +28,9 @@
             },
             {
                 "$ref": "#/definitions/Partial<Partial<Thermostat>>"
+            },
+            {
+                "$ref": "#/definitions/Partial<StartStopState&DockState>"
             }
         ]
     },
@@ -179,6 +182,24 @@
                 },
                 "thermostatTemperatureSetpointLow": {
                     "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "Partial<StartStopState&DockState>": {
+            "additionalProperties": false,
+            "properties": {
+                "isDocked": {
+                    "type": "boolean"
+                },
+                "isPaused": {
+                    "type": "boolean"
+                },
+                "isRunning": {
+                    "type": "boolean"
+                },
+                "online": {
+                    "type": "boolean"
                 }
             },
             "type": "object"

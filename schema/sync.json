@@ -432,6 +432,9 @@
                         ],
                         "type": "object"
                     },
+                    "turnOnWhenBrightnessChanges": {
+                        "type": "boolean"
+                    },
                     "type": {
                         "enum": [
                             "light"
@@ -495,6 +498,9 @@
                             "online"
                         ],
                         "type": "object"
+                    },
+                    "turnOnWhenBrightnessChanges": {
+                        "type": "boolean"
                     },
                     "twoFactor": {
                         "enum": [
@@ -569,6 +575,9 @@
                             "online"
                         ],
                         "type": "object"
+                    },
+                    "turnOnWhenBrightnessChanges": {
+                        "type": "boolean"
                     },
                     "twoFactor": {
                         "enum": [
@@ -678,6 +687,9 @@
                         ],
                         "type": "object"
                     },
+                    "turnOnWhenBrightnessChanges": {
+                        "type": "boolean"
+                    },
                     "type": {
                         "enum": [
                             "light"
@@ -778,6 +790,9 @@
                             "online"
                         ],
                         "type": "object"
+                    },
+                    "turnOnWhenBrightnessChanges": {
+                        "type": "boolean"
                     },
                     "twoFactor": {
                         "enum": [
@@ -889,6 +904,9 @@
                             "online"
                         ],
                         "type": "object"
+                    },
+                    "turnOnWhenBrightnessChanges": {
+                        "type": "boolean"
                     },
                     "twoFactor": {
                         "enum": [
@@ -2301,6 +2319,183 @@
                     "queryOnlyTemperatureSetting",
                     "state",
                     "temperatureUnit",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pausable": {
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "isDocked": {
+                                "type": "boolean"
+                            },
+                            "isPaused": {
+                                "type": "boolean"
+                            },
+                            "isRunning": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "online"
+                        ],
+                        "type": "object"
+                    },
+                    "type": {
+                        "enum": [
+                            "vacuum"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pausable": {
+                        "type": "boolean"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "isDocked": {
+                                "type": "boolean"
+                            },
+                            "isPaused": {
+                                "type": "boolean"
+                            },
+                            "isRunning": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "online"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "ack"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "vacuum"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "state",
+                    "twoFactor",
+                    "type"
+                ],
+                "type": "object"
+            },
+            {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nicknames": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "pausable": {
+                        "type": "boolean"
+                    },
+                    "pin": {
+                        "type": "string"
+                    },
+                    "roomHint": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "isDocked": {
+                                "type": "boolean"
+                            },
+                            "isPaused": {
+                                "type": "boolean"
+                            },
+                            "isRunning": {
+                                "type": "boolean"
+                            },
+                            "online": {
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "online"
+                        ],
+                        "type": "object"
+                    },
+                    "twoFactor": {
+                        "enum": [
+                            "pin"
+                        ],
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "vacuum"
+                        ],
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "pin",
+                    "state",
                     "twoFactor",
                     "type"
                 ],
