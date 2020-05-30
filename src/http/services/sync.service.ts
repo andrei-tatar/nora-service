@@ -113,7 +113,7 @@ export class SyncService {
                         sync.type = DeviceTypes.Vacuum;
                         sync.traits.push(Traits.StartStop, Traits.Dock);
                         sync.attributes = {
-                            pausable: true
+                            pausable: device.pausable
                         }
                         break;
                 }
