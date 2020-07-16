@@ -32,7 +32,7 @@
     "firebase-functions": "^3.6.1",
     "firebaseui": "^4.5.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.0",
     "pg": "^7.18.2",
