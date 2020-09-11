@@ -34,7 +34,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "morgan": "^1.10.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "pg": "^7.18.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.5",
