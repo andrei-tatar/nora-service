@@ -1,3 +1,16 @@
+#First Time Setup
+Initialize git submodule:
+`git submodule init`
+`git submodule update`
+
+Setup npm depednencies:
+`npm install`
+
+Install typescript
+Ubuntu: `sudo apt install node-typescript`
+
+Compile the code, run in the repo root:
+`tsc`
 
 # nora-service
 NORA (https://node-red-google-home.herokuapp.com) backend service deployed in Heroku.
@@ -12,8 +25,9 @@ Needed:
 
 ## HEROKU
 
-- Create a new Account and then a new app. From Overview, add new add-on "Heroku Postgres"
-To deploy, you can either use the heroku cli or connect your github account. (do not deploy anything yet)
+- Create a new Account and then a new app.
+ - From Overview, add new add-on "Heroku Postgres"
+To deploy, you need to use the heroku cli. (do not deploy anything yet)
  - Keep this browser tab open
 
 ## FIREBASE
@@ -21,7 +35,8 @@ To deploy, you can either use the heroku cli or connect your github account. (do
  - Create a new Firebase Project and name it accordingly.
  - Navigate to Project Overview - Project Settings - General and create a new web app.
  - Navigate to Project Overview - Project Settings - Service Accounts and generate new private key
- - Navigate to Develop - Authentication - Users - Set up sign-in method - Google - enable - check that Web SDK configuration is filled in.
+ - Navigate to Sidebar - Authentication - Sign-in method - Google - enable - check that Web SDK configuration is filled in.
+ - Navigate to Sidebar - Authentication - Authorized domains - add heroku app to the list, e.g. https://XXXXXXXXX.herokuapp.com
  - Keep this browser tab open
 
 ## Google Api Console
@@ -62,6 +77,9 @@ In Heroku go to Settings - Config Vars and add
     SERVICE_ACCOUNT_KEY =  downloaded service account json from firebase - private_key (format it as multiline)
     FIREBASE_APIKEY = firebase - settings -general - your apps
     FIREBASE_AUTHDOMAIN = firebase - settings -general - your apps
+    PROJECT_API_KEY = google api console - credentials - create API key
+    
+    NOTE!: When you add the Postgres Database, heroku should add a DATABASE_URL env var automatically!
 
 ## USER.REPOSITORY.TS
 Modify [src/services/user.repository.ts](https://github.com/andrei-tatar/nora-service/blob/master/src/services/user.repository.ts)
@@ -74,7 +92,7 @@ To create the Database Tables modify this lines:
             CREATE TABLE IF NOT EXISTS appuser (
                 uid VARCHAR(30) CONSTRAINT pk PRIMARY KEY,
                 linked boolean DEFAULT false
-            )`
+noradevtest            )`
         );
     
         await service.query('ALTER TABLE appuser ADD COLUMN IF NOT EXISTS noderedversion integer DEFAULT 1');
@@ -88,10 +106,26 @@ To create the Database Tables modify this lines:
 
 ## PUSH
 
-THAT'S IT, you are ready to deploy to Heroku! 
-Build the app and the  schema with `npm run heroku-postbuild` before deploying.
-To deploy follow the instructions from the Heroku website or if you linked your account in Heroku with Github just push to github.
+THAT'S IT, you are ready to deploy to Heroku!
 
+To deploy, you must the heroku cli. 
+
+Deploying through git won't work, because of the git submodule.
+
+Install the heroku cli: https://devcenter.heroku.com/articles/heroku-cli#download-and-install
+
+Enable the heroku cli by going through Heroku dashboard, deployment tab, and clicking heroku git.
+
+Build the app and the  schema with `npm run heroku-postbuild` before deploying.
+
+Add the heroku git remote:
+`heroku git:remote -a HEROKU_APP_NAME`
+
+Then use git to push the repo to heroku:
+`git push heroku`
+
+To view application output, run:
+`heroku logs`
 ## README DISCLAIMER
 
 The instructions might be incomplete. For issues with the instructions please create an issue and we'll take another look,
