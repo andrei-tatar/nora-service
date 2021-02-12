@@ -71,6 +71,13 @@ export class QueryService {
                 state.isLocked = device.state.isLocked;
                 state.isJammed = device.state.isJammed;
                 break;
+            case 'fan':
+                state.on = device.state.on;
+                state.currentFanSpeedSetting = device.state.currentFanSpeedSetting;
+                if (device.supportsFanSpeedPercent) {
+                    state.currentFanSpeedPercent = device.state.currentFanSpeedPercent || 100;
+                }
+                break;
         }
     }
 }

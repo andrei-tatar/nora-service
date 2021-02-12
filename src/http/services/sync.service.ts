@@ -109,6 +109,16 @@ export class SyncService {
                         sync.type = DeviceTypes.Lock;
                         sync.traits.push(Traits.LockUnlock);
                         break;
+                    case 'fan':
+                        sync.type = DeviceTypes.Fan;
+                        sync.traits.push(Traits.OnOff, Traits.FanSpeed);
+                        sync.attributes = {
+                            availableFanSpeeds: device.availableFanSpeeds,
+                            reversible: device.reversible,
+                            supportsFanSpeedPercent: device.supportsFanSpeedPercent,
+                            commandOnlyFanSpeed: device.commandOnlyFanSpeed,
+                        };
+                        break;
                 }
                 syncDevices.push(sync);
             }

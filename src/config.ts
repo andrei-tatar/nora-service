@@ -92,7 +92,7 @@ if (isLocal && typeof local.postgresSsl === 'boolean') {
     }
 }
 export const postgres = {
-    connectionString: 'postgres://ohubflebemtayr:798e58067843da246bd9e3016c16b1e91e8429ed1f835bc028b4654905476c4b@ec2-79-125-26-232.eu-west-1.compute.amazonaws.com:5432/d971p7nrn8fnsv',
+    connectionString: getCfg('DATABASE_URL'),
     ssl: ssl,
     max: (isLocal ? local.postgresMax : ~~getCfg('POSTGRES_MAX')) || 5,
     idleTimeoutMillis: (isLocal ? local.postgresIdleTimeoutMills : ~~getCfg('POSTGRES_IDLETIMEOUTMILLS')) || 4 * this.HOUR,
