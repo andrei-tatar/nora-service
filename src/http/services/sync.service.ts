@@ -109,6 +109,13 @@ export class SyncService {
                         sync.type = DeviceTypes.Lock;
                         sync.traits.push(Traits.LockUnlock);
                         break;
+                    case 'vacuum':
+                        sync.type = DeviceTypes.Vacuum;
+                        sync.traits.push(Traits.StartStop, Traits.Dock);
+                        sync.attributes = {
+                            pausable: device.pausable
+                        }
+                        break;
                 }
                 syncDevices.push(sync);
             }

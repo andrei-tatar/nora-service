@@ -105,6 +105,34 @@ export class DevicesRepository {
         DevicesRepository.commands.next({ type: 'activate-scene', uid: this.uid, deviceIds, group, deactivate });
     }
 
+    sendToDock(group: string, deviceIds: string[], { notifyClient = false, requestId }: { notifyClient?: boolean, requestId?: string } = {}) {
+        DevicesRepository.commands.next({ type: 'dock', uid: this.uid, deviceIds, group });
+        const groupDevices = DevicesRepository.devicesPerUser[this.uid]?.[group]?.devices ?? {};
+        const notiyClientChanges: StateChanges = {};
+        const googleStateChanges: StateChanges = {};
+
+        for (const id of deviceIds) {
+            const device = groupDevices[id];
+            if (!device) { continue; }
+            device.state['isRunning'] = false
+            device.state['isPaused'] = false
+            device.state['isDocked'] = true
+            notiyClientChanges[id] = device.state;
+            googleStateChanges[compose({ id, group })] =device.state;
+
+            this.reportStateService.reportState(googleStateChanges, requestId).catch(err => {
+                console.warn('err while reporting state', err);
+            });
+
+            DevicesRepository.statechanges.next({
+                uid: this.uid,
+                group,
+                stateChanges: notiyClientChanges,
+                hasChanges: true,
+            });
+        }
+    }
+	
     updateDevicesState(
         group: string,
         ids: string[],
@@ -156,14 +184,21 @@ export class DevicesRepository {
     }
 }
 
-export type Command = ActivateSceneCommand;
+export type Command = ActivateSceneCommand & SendtoDockCommand;
 
 export interface ActivateSceneCommand {
-    type: 'activate-scene';
+    type: string;
     uid: string;
     group: string;
-    deviceIds: string[];
-    deactivate: boolean;
+    deviceIds?: string[];
+    deactivate?: boolean;
+}
+
+export interface SendtoDockCommand {
+    type: string;
+    uid: string;
+    group: string;
+    isDocked?: boolean;
 }
 
 export interface UserDevices {
@@ -172,3 +207,4 @@ export interface UserDevices {
         localExecution: boolean;
     };
 }
+
